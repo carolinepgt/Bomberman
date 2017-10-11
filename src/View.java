@@ -3,8 +3,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.net.URL;
-
 
 public class View {
 
@@ -37,11 +35,10 @@ public class View {
             }
         }
 
-        URL imageURL = getClass().getResource("img/perso.jpg");
-        imagePerso = new Image(imageURL.toExternalForm());
+        imagePerso = new Image("img/perso.jpg");
         nodePerso = new ImageView(imagePerso);
         terrain.getChildren().add(nodePerso);
-        actualisePositionImage();
+        actualisePositionPerso();
         scene = new Scene(terrain, 500, 500);
 
     }
@@ -50,7 +47,7 @@ public class View {
         return scene;
     }
 
-   public void actualisePositionImage(){
+   public void actualisePositionPerso(){
        Personnage perso=model.getTabPerso()[0];
        nodePerso.relocate(perso.getPosX(),perso.getPosY());
    }
@@ -67,7 +64,7 @@ public class View {
        image.toBack();
     }
 
-    public void supprimeImageView(int posX, int posY) {
+    public void supprimeElementImageView(int posX, int posY) {
        terrain.getChildren().remove(tabImageView[posX][posY]);
        tabImageView[posX][posY]=null;
     }

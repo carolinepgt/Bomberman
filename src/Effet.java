@@ -18,7 +18,7 @@ public class Effet extends Element {
      */
 
     public Effet(int posX, int posY) {
-        super( "img/effet.gif",posX, posY);
+        super( "",posX, posY);
         typeEffetCreation();
     }
 

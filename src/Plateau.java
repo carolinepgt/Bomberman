@@ -23,9 +23,5 @@ public class Plateau {
         return tabElement;
     }
 
-    public void setElement(Element element, int x, int y){
-        tabElement[x][y]=element;
-    }
-
 
 }

@@ -37,12 +37,12 @@ public class Personnage {
         return vitesse;
     }
 
-    public int getNbBombeRestantes() {
-        return nbBombeRestantes;
-    }
-
     public void setVitesse(int vitesse) {
         this.vitesse = vitesse;
+    }
+
+    public int getNbBombeRestantes() {
+        return nbBombeRestantes;
     }
 
     public void setNbBombeRestantes(int nbBombeRestantes) {

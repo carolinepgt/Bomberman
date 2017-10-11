@@ -7,8 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import javax.swing.*;
-
 
 public class Controller {
 
@@ -34,6 +32,9 @@ public class Controller {
         scene.setOnKeyReleased(keyEvent -> keyEventReleased(keyEvent));
     }
 
+    /*
+    Action à la pression d'une touche
+     */
     public void keyEventPressed(javafx.scene.input.KeyEvent keyEvent){
         switch (keyEvent.getCode()) {
             case UP:    goNorth = true; break;
@@ -44,7 +45,9 @@ public class Controller {
         }
     }
 
-
+    /*
+    Action lorsque l'on relache la touche
+     */
     public void keyEventReleased(javafx.scene.input.KeyEvent keyEvent){
         switch (keyEvent.getCode()) {
             case UP:    goNorth = false; break;
@@ -55,6 +58,9 @@ public class Controller {
     }
 
 
+    /*
+    Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
+     */
     public void actualisePostion() {
         Element[][] elements=model.getPlateau().getTabElement();
         Personnage perso=model.getTabPerso()[0];
@@ -65,12 +71,13 @@ public class Controller {
         Element bombeProbableHD=elements[(perso.getPosX()+width)/50][perso.getPosY()/50];
         Element bombeProbableBD=elements[(perso.getPosX()+width)/50][(perso.getPosY()+height)/50];
 
+
         if (goNorth){
             Element element1 = elements[perso.getPosX()/50][(perso.getPosY()-perso.getVitesse())/50];
             Element element2 = elements[(perso.getPosX()+width)/50][(perso.getPosY()-perso.getVitesse())/50];
             if ((element1==null || element1.getClass()==Effet.class || element1==bombeProbableHG) && (element2==null || element2.getClass()==Effet.class || element2==bombeProbableHD)){
                 perso.setPosY(perso.getPosY()-perso.getVitesse());
-                view.actualisePositionImage();
+                view.actualisePositionPerso();
                 appliqueEffet(element1,element2);
             }
         }
@@ -79,7 +86,7 @@ public class Controller {
             Element element2 = elements[(perso.getPosX()+ width + perso.getVitesse())/50][(perso.getPosY()+height)/50];
             if ((element1==null || element1.getClass()==Effet.class || element1==bombeProbableHD) && (element2==null || element2.getClass()==Effet.class || element2==bombeProbableBD)){
                 perso.setPosX(perso.getPosX() + perso.getVitesse());
-                view.actualisePositionImage();
+                view.actualisePositionPerso();
                 appliqueEffet(element1,element2);
             }
         }
@@ -88,7 +95,7 @@ public class Controller {
             Element element2 = elements[(perso.getPosX() + width)/50][(perso.getPosY() + height + perso.getVitesse())/50];
             if ((element1==null || element1.getClass()==Effet.class || element1==bombeProbableBG) && (element2==null || element2.getClass()==Effet.class || element2==bombeProbableBD)){
                 perso.setPosY(perso.getPosY() + perso.getVitesse());
-                view.actualisePositionImage();
+                view.actualisePositionPerso();
                 appliqueEffet(element1,element2);
             }
         }
@@ -97,13 +104,15 @@ public class Controller {
             Element element2 = elements[(perso.getPosX() - perso.getVitesse())/50][(perso.getPosY() + height)/50];
             if ((element1==null || element1.getClass()==Effet.class || element1==bombeProbableHG) && (element2==null || element2.getClass()==Effet.class || element2==bombeProbableBG)){
                 perso.setPosX(perso.getPosX() - perso.getVitesse());
-                view.actualisePositionImage();
+                view.actualisePositionPerso();
                 appliqueEffet(element1,element2);
             }
         }
     }
 
-
+    /*
+    Si c'est possible pose une bombe à la position du joueur
+     */
     private void poseBombe() {
 
         Personnage perso=model.getTabPerso()[0];
@@ -113,12 +122,15 @@ public class Controller {
 
         if (perso.getNbBombeRestantes()>0 && element==null){
             element=new Bombe(perso,posX,posY);
-            model.getPlateau().setElement(element,posX,posY);
+            model.getPlateau().getTabElement()[posX][posY]=element;
             animationBombe((Bombe)element);
         }
     }
 
-    public void animationBombe(Bombe element) {
+    /*
+    Gère l'animation de la bombe
+     */
+    private void animationBombe(Bombe element) {
 
         ImageView bombe=new ImageView(new Image(element.getImageURL()));
         bombe.relocate(element.getPosX()*50, element.getPosY()*50);
@@ -142,84 +154,106 @@ public class Controller {
         });
     }
 
-    public void suppressionElement(Element element) {
+    /*
+    Supprime l'élement envoyé en paramètre
+     */
+    private void suppressionElement(Element element) {
 
         Element[][] elements=model.getPlateau().getTabElement();
         if (element!=null && element==elements[element.getPosX()][element.getPosY()]){
 
             if (!(element.getClass()==Mur.class && !((Mur)element).isDestructible())){
                 elements[element.getPosX()][element.getPosY()]=null;
-                view.supprimeImageView(element.getPosX(),element.getPosY());
+                view.supprimeElementImageView(element.getPosX(),element.getPosY());
 
                 if (element.getClass()==Mur.class){
-                    Effet effet = new Effet(element.getPosX(),element.getPosY());
-                    elements[element.getPosX()][element.getPosY()]=effet;
-                    ImageView imageEffet=new ImageView(new Image(effet.getImageURL()));
-                    imageEffet.relocate(element.getPosX()*50, element.getPosY()*50);
-                    view.insereElement(imageEffet,element.getPosX(),element.getPosY());
-
-
+                    supprimeMur((Mur)element);
                 }
 
                 if (element.getClass()==Bombe.class){
-                    int x=model.getTabPerso()[0].getPosX()/50;
-                    int y=model.getTabPerso()[0].getPosY()/50;
-                    if (x==element.getPosX() && y==element.getPosY()) degatJoueur();
-
-                    Bombe bombe = (Bombe)element;
-                    bombe.getPersonnage().setNbBombeRestantes(bombe.getPersonnage().getNbBombeRestantes()+1);
-                    boolean mur=false;
-                    Element e;
-                    for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
-                        if (x==element.getPosX()-i && y==element.getPosY()) degatJoueur();
-                        e=elements[element.getPosX()-i][element.getPosY()];
-                        mur=e!=null && e.getClass()==Mur.class;
-                        suppressionElement(e);
-                    }
-
-                    mur=false;
-                    for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
-                        if (x==element.getPosX()+i && y==element.getPosY()) degatJoueur();
-                        e=elements[element.getPosX()+i][element.getPosY()];
-                        mur=e!=null && e.getClass()==Mur.class;
-                        suppressionElement(e);
-                    }
-
-                    mur=false;
-                    for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
-                        if (x==element.getPosX() && y==element.getPosY()-i) degatJoueur();
-                        e=elements[element.getPosX()][element.getPosY()-i];
-                        mur=e!=null && e.getClass()==Mur.class;
-                        suppressionElement(e);
-                    }
-
-                    mur=false;
-                    for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
-                        if (x==element.getPosX() && y==element.getPosY()+i) degatJoueur();
-                        e=elements[element.getPosX()][element.getPosY()+i];
-                        mur=e!=null && e.getClass()==Mur.class;
-                        suppressionElement(e);
-                    }
-
+                    explosionBombe((Bombe)element);
                 }
 
             }
         }
     }
 
+    /*
+    Crée un effet à la place du mur détruit
+     */
+    private void supprimeMur(Mur element){
+        Effet effet = new Effet(element.getPosX(),element.getPosY());
+        model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()]=effet;
+        ImageView imageEffet=new ImageView(new Image(effet.getImageURL()));
+        imageEffet.relocate(element.getPosX()*50, element.getPosY()*50);
+        view.insereElement(imageEffet,element.getPosX(),element.getPosY());
+    }
+
+    /*
+    Gère l'explosion de la bombe: les elements en ligne et à portée de la bombe sont détruit, les joueurs dans cette zone subissent des degats
+     */
+    private void explosionBombe(Bombe bombe){
+        int x=model.getTabPerso()[0].getPosX()/50;
+        int y=model.getTabPerso()[0].getPosY()/50;
+        if (x==bombe.getPosX() && y==bombe.getPosY()) degatJoueur();
+
+        Element[][] elements=model.getPlateau().getTabElement();
+
+        bombe.getPersonnage().setNbBombeRestantes(bombe.getPersonnage().getNbBombeRestantes()+1);
+
+        boolean mur=false;
+        Element e;
+        for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
+            if (x==bombe.getPosX()-i && y==bombe.getPosY()) degatJoueur();
+            e=elements[bombe.getPosX()-i][bombe.getPosY()];
+            mur=e!=null && e.getClass()==Mur.class;
+            suppressionElement(e);
+        }
+
+        mur=false;
+        for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
+            if (x==bombe.getPosX()+i && y==bombe.getPosY()) degatJoueur();
+            e=elements[bombe.getPosX()+i][bombe.getPosY()];
+            mur=e!=null && e.getClass()==Mur.class;
+            suppressionElement(e);
+        }
+
+        mur=false;
+        for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
+            if (x==bombe.getPosX() && y==bombe.getPosY()-i) degatJoueur();
+            e=elements[bombe.getPosX()][bombe.getPosY()-i];
+            mur=e!=null && e.getClass()==Mur.class;
+            suppressionElement(e);
+        }
+
+        mur=false;
+        for (int i=1 ; i<=bombe.getPortee() && !mur; i++){
+            if (x==bombe.getPosX() && y==bombe.getPosY()+i) degatJoueur();
+            e=elements[bombe.getPosX()][bombe.getPosY()+i];
+            mur=e!=null && e.getClass()==Mur.class;
+            suppressionElement(e);
+        }
+    }
+
+    /*
+    Inflige un point de degat au joueur
+     */
     private void degatJoueur() {
         model.getTabPerso()[0].setVie(model.getTabPerso()[0].getVie()-1);
         if (model.getTabPerso()[0].getVie()<=0) System.out.println("le joueur est mort, fin de la partie");
     }
 
 
-    public void appliqueEffet(Element element1, Element element2){
+    /*
+    Applique un ou les effets présents a l'emplacement du déplacement du personnages,
+     */
+    private void appliqueEffet(Element element1, Element element2){
         Personnage perso=model.getTabPerso()[0];
         if (element1!=null && element1.getClass()==Effet.class){
             ((Effet)element1).appliqueEffet(perso);
             suppressionElement(element1);
         }
-        if (element2!=null && element2.getClass()==Effet.class){
+        if (element2!=null && element2.getClass()==Effet.class && element1!=element2){
             ((Effet)element2).appliqueEffet(perso);
             suppressionElement(element2);
         }
