@@ -49,8 +49,8 @@ public class View {
 
    public void actualisePositionPerso(){
        Personnage perso=model.getTabPerso()[0];
-       nodePerso.relocate(perso.getPosX(),perso.getPosY());
-   }
+        nodePerso.relocate(perso.getPosX(),perso.getPosY());
+    }
 
 
     public Image getImagePerso() {
@@ -59,13 +59,13 @@ public class View {
 
 
     public void insereElement(ImageView image, int x, int y) {
-       tabImageView[x][y]=image;
-       terrain.getChildren().add(image);
-       image.toBack();
+        tabImageView[x][y]=image;
+        terrain.getChildren().add(image);
+        image.toBack();
     }
 
     public void supprimeElementImageView(int posX, int posY) {
-       terrain.getChildren().remove(tabImageView[posX][posY]);
+        terrain.getChildren().remove(tabImageView[posX][posY]);
        tabImageView[posX][posY]=null;
     }
 }

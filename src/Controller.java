@@ -66,6 +66,8 @@ public class Controller {
         Personnage perso=model.getTabPerso()[0];
         int width=(int)view.getImagePerso().getWidth();
         int height=(int)view.getImagePerso().getHeight();
+
+        // gérer lorsque le personnage pose une bombe (et donc est dedans)
         Element bombeProbableHG=elements[perso.getPosX()/50][perso.getPosY()/50];
         Element bombeProbableBG=elements[perso.getPosX()/50][(perso.getPosY()+height)/50];
         Element bombeProbableHD=elements[(perso.getPosX()+width)/50][perso.getPosY()/50];
@@ -249,11 +251,11 @@ public class Controller {
      */
     private void appliqueEffet(Element element1, Element element2){
         Personnage perso=model.getTabPerso()[0];
-        if (element1!=null && element1.getClass()==Effet.class){
+        if (element1!=null){
             ((Effet)element1).appliqueEffet(perso);
             suppressionElement(element1);
         }
-        if (element2!=null && element2.getClass()==Effet.class && element1!=element2){
+        if (element2!=null  && element1!=element2){
             ((Effet)element2).appliqueEffet(perso);
             suppressionElement(element2);
         }
