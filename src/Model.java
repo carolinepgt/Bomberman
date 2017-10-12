@@ -6,7 +6,7 @@ public class Model {
 
     public Model() {
         tabPerso=new Personnage[1];
-        tabPerso[0]=new Personnage(100,100);
+        tabPerso[0]=new Personnage(30,30);
         plateau=new Plateau();
     }
 

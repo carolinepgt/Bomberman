@@ -18,7 +18,7 @@ public class Effet extends Element {
      */
 
     public Effet(int posX, int posY) {
-        super( "",posX, posY);
+        super( "img/effet.gif",posX, posY);
         typeEffetCreation();
     }
 
@@ -28,10 +28,10 @@ public class Effet extends Element {
         String url="";
         System.out.println(typeEffet);
         switch (typeEffet) {
-            case 1: url="img/bonusPortee.jpg"; break;
-            case 2: url="img/bonusNbBombeRestantes.jpg"; break;
-            case 3: url="img/bonusVie.png"; break;
-            case 4: url="img/bonusVitesse.jpg"; break;
+            case 1: url="img2/effet.gif"; break;
+            case 2: url="img2/bonusNbBombeRestantes.jpg"; break;
+            case 3: url="img2/bonusVie.png"; break;
+            case 4: url="img2/bonusVitesse.jpg"; break;
         }
         super.setImageURL(url);
     }
@@ -41,7 +41,7 @@ public class Effet extends Element {
             case 1: perso.setPortee(perso.getPortee()+1); break;
             case 2: perso.setNbBombeRestantes(perso.getNbBombeRestantes()+1); break;
             case 3: perso.setVie(perso.getVie()+1); break;
-            case 4: perso.setVitesse(perso.getVitesse()+2); break;
+            case 4: perso.setVitesse(perso.getVitesse()+1); break;
         }
     }
 }

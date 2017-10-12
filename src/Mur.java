@@ -4,7 +4,7 @@ public class Mur extends Element {
     private final boolean Destructible;
 
     public Mur(boolean Destructible, int x, int y) {
-        super("img/mur.png",x,y);
+        super(Destructible,x,y);
         this.Destructible=Destructible;
     }
 

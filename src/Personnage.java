@@ -10,7 +10,7 @@ public class Personnage {
     public Personnage(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        this.vitesse = 5;
+        this.vitesse = 2;
         this.portee=1;
         this.vie=1;
         this.nbBombeRestantes=1;
@@ -37,12 +37,12 @@ public class Personnage {
         return vitesse;
     }
 
-    public void setVitesse(int vitesse) {
-        this.vitesse = vitesse;
-    }
-
     public int getNbBombeRestantes() {
         return nbBombeRestantes;
+    }
+
+    public void setVitesse(int vitesse) {
+        this.vitesse = vitesse;
     }
 
     public void setNbBombeRestantes(int nbBombeRestantes) {
