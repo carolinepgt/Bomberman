@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 import javax.swing.*;
+import java.util.Random;
 
 
 public class Controller {
@@ -214,11 +215,14 @@ public class Controller {
     Crée un effet à la place du mur détruit
      */
     private void supprimeMur(Mur element) {
-        Effet effet = new Effet(element.getPosX(), element.getPosY());
-        model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = effet;
-        ImageView imageEffet = new ImageView(new Image(effet.getImageURL()));
-        imageEffet.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
-        view.insereElement(imageEffet, element.getPosX(), element.getPosY());
+        Random random=new Random();
+        if (random.nextInt(3)==0){
+            Effet effet = new Effet(element.getPosX(), element.getPosY());
+            model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = effet;
+            ImageView imageEffet = new ImageView(new Image(effet.getImageURL()));
+            imageEffet.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
+            view.insereElement(imageEffet, element.getPosX(), element.getPosY());
+        }
     }
 
     /*
