@@ -15,7 +15,6 @@ public class Plateau {
                 }
             }
         }
-        //tabElement[3][4]=new Mur(true,3,4);
 
     }
 

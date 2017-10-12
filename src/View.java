@@ -8,7 +8,6 @@ import java.net.URL;
 
 public class View {
 
-
     private Scene scene;
     private Image imagePerso;
     private ImageView nodePerso;

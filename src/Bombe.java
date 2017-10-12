@@ -1,5 +1,4 @@
 
-
 public class Bombe extends Element {
 
     private Personnage personnage;

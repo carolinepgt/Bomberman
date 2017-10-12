@@ -228,6 +228,7 @@ public class Controller {
     /*
     Gère l'explosion de la bombe: les elements en ligne et à portée de la bombe sont détruit, les joueurs dans cette zone subissent des degats
      */
+
     private void explosionBombe(Bombe bombe) {
         int x = model.getTabPerso()[0].getPosX() / sizeElem;
         int y = model.getTabPerso()[0].getPosY() / sizeElem;

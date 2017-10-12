@@ -17,6 +17,7 @@ public class Personnage {
 
     }
 
+
     public int getPosX() {
         return posX;
     }

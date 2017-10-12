@@ -4,17 +4,12 @@ public class Effet extends Element {
     int typeEffet;
 
     /*
-    0 : sans effet;
 
     1 : Bonus portee;
     2 : Bonus nbBombe;
     3 : Bonus vie;
     4 : Bonus vitesse;
 
-    5 : Malus portee;
-    6 : Malus nbBombe;
-    7 : Malus vie;
-    8 : Malus vitesse;
      */
 
     public Effet(int posX, int posY) {
