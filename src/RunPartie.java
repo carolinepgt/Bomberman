@@ -26,18 +26,25 @@ public class RunPartie extends Application{
         primaryStage.setScene(view.getScene());
         primaryStage.show();
 
-        /*File file = new File(System.getProperty("user.dir")+"/src/son/toriel.mp3");
+
+        File file = new File(System.getProperty("user.dir")+"/src/son/toriel.mp3");
         Media media = new Media(file.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(INDEFINITE);
         mediaPlayer.setVolume(0.02);
-        mediaPlayer.play();*/
+        mediaPlayer.play();
+
 
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (model.partieFini()) this.stop();
+                if (model.partieFini()) {
+                    mediaPlayer.stop();
+                    this.stop();
+                }
                 controller.actualisePostion();
+                if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
 
             }
         };
