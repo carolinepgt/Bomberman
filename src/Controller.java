@@ -21,6 +21,11 @@ public class Controller {
     private boolean goSouth;
     private boolean goWest;
     private boolean goEast;
+
+    private boolean goNorth2;
+    private boolean goSouth2;
+    private boolean goWest2;
+    private boolean goEast2;
     public int sizeElem = 30;
 
     public Controller(View view, Model model) {
@@ -54,9 +59,25 @@ public class Controller {
             case RIGHT:
                 goEast = true;
                 break;
-            case SPACE:
-                poseBombe();
+            case CONTROL:
+                poseBombe(0);
                 break;
+            case Z:
+                goNorth2=true;
+                break;
+            case S:
+                goSouth2 = true;
+                break;
+            case Q:
+                goWest2 = true;
+                break;
+            case D:
+                goEast2 = true;
+                break;
+            case SPACE:
+                poseBombe(1);
+                break;
+
         }
     }
 
@@ -77,6 +98,18 @@ public class Controller {
             case RIGHT:
                 goEast = false;
                 break;
+            case Z:
+                goNorth2=false;
+                break;
+            case S:
+                goSouth2 = false;
+                break;
+            case Q:
+                goWest2 = false;
+                break;
+            case D:
+                goEast2 = false;
+                break;
         }
     }
 
@@ -86,69 +119,74 @@ public class Controller {
      */
     public void actualisePostion() {
         Element[][] elements = model.getPlateau().getTabElement();
-        Personnage perso = model.getTabPerso()[0];
-        int width = (int) view.getImagePerso().getWidth();
-        int height = (int) view.getImagePerso().getHeight();
+        int indexPerso=0;
+        for (Personnage perso:model.getTabPerso()){
+            int width = (int) view.getImagePerso().getWidth();
+            int height = (int) view.getImagePerso().getHeight();
 
-        Element bombeProbableHG = elements[perso.getPosX() / sizeElem][perso.getPosY() / sizeElem];
-        Element bombeProbableBG = elements[perso.getPosX() / sizeElem][(perso.getPosY() + height) / sizeElem];
-        Element bombeProbableHD = elements[(perso.getPosX() + width) / sizeElem][perso.getPosY() / sizeElem];
-        Element bombeProbableBD = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() + height) / sizeElem];
+            Element bombeProbableHG = elements[perso.getPosX() / sizeElem][perso.getPosY() / sizeElem];
+            Element bombeProbableBG = elements[perso.getPosX() / sizeElem][(perso.getPosY() + height) / sizeElem];
+            Element bombeProbableHD = elements[(perso.getPosX() + width) / sizeElem][perso.getPosY() / sizeElem];
+            Element bombeProbableBD = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() + height) / sizeElem];
 
-        if (goNorth) {
-            for (int i = 0; i < perso.getVitesse(); i++) {
-                Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() - 1) / sizeElem];
-                Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() - 1) / sizeElem];
-                if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableHD)) {
-                    perso.setPosY(perso.getPosY() - 1);
+            if ((goNorth && perso==model.getTabPerso()[0])||(goNorth2 && perso==model.getTabPerso()[1])) {
+                for (int i = 0; i < perso.getVitesse(); i++) {
+                    Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() - 1) / sizeElem];
+                    Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() - 1) / sizeElem];
+                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableHD)) {
+                        perso.setPosY(perso.getPosY() - 1);
 
-                    view.actualisePositionImage(3);
-                    appliqueEffet(element1, element2);
+                        view.actualisePositionImage(3, indexPerso);
+                        appliqueEffet(element1, element2, perso);
+                    }
                 }
             }
-        }
-        if (goEast) {
-            for (int i = 0; i < perso.getVitesse(); i++) {
-                Element element1 = elements[(perso.getPosX() + width + 1) / sizeElem][perso.getPosY() / sizeElem];
-                Element element2 = elements[(perso.getPosX() + width + 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
-                if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHD) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
-                    perso.setPosX(perso.getPosX() + 1);
-                    view.actualisePositionImage(2);
-                    appliqueEffet(element1, element2);
+            if ((goEast && perso==model.getTabPerso()[0])||(goEast2 && perso==model.getTabPerso()[1])) {
+                for (int i = 0; i < perso.getVitesse(); i++) {
+                    Element element1 = elements[(perso.getPosX() + width + 1) / sizeElem][perso.getPosY() / sizeElem];
+                    Element element2 = elements[(perso.getPosX() + width + 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
+                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHD) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
+                        perso.setPosX(perso.getPosX() + 1);
+                        view.actualisePositionImage(2, indexPerso);
+                        appliqueEffet(element1, element2, perso);
+                    }
                 }
-            }
 
-        }
-        if (goSouth) {
-            for (int i = 0; i < perso.getVitesse(); i++) {
-                Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
-                Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
-                if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableBG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
-                    perso.setPosY(perso.getPosY() + 1);
-                    view.actualisePositionImage(1);
-                    appliqueEffet(element1, element2);
+            }
+            if ((goSouth && perso==model.getTabPerso()[0])||(goSouth2 && perso==model.getTabPerso()[1])) {
+                for (int i = 0; i < perso.getVitesse(); i++) {
+                    Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
+                    Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
+                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableBG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
+                        perso.setPosY(perso.getPosY() + 1);
+                        view.actualisePositionImage(1, indexPerso);
+                        appliqueEffet(element1, element2, perso);
+                    }
                 }
             }
-        }
-        if (goWest) {
-            for (int i = 0; i < perso.getVitesse(); i++) {
-                Element element1 = elements[(perso.getPosX() - 1) / sizeElem][perso.getPosY() / sizeElem];
-                Element element2 = elements[(perso.getPosX() - 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
-                if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBG)) {
-                    perso.setPosX(perso.getPosX() - 1);
-                    view.actualisePositionImage(4);
-                    appliqueEffet(element1, element2);
+            if ((goWest && perso==model.getTabPerso()[0])||(goWest2 && perso==model.getTabPerso()[1])) {
+                for (int i = 0; i < perso.getVitesse(); i++) {
+                    Element element1 = elements[(perso.getPosX() - 1) / sizeElem][perso.getPosY() / sizeElem];
+                    Element element2 = elements[(perso.getPosX() - 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
+                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBG)) {
+                        perso.setPosX(perso.getPosX() - 1);
+                        view.actualisePositionImage(4, indexPerso);
+                        appliqueEffet(element1, element2,perso);
+                    }
                 }
             }
+            indexPerso++;
         }
+
     }
 
     /*
     Si c'est possible pose une bombe à la position du joueur
      */
-    private void poseBombe() {
+    private void poseBombe(int indexPerso) {
 
-        Personnage perso = model.getTabPerso()[0];
+        Personnage perso = model.getTabPerso()[indexPerso];
+        if (!perso.estEnVie()) return;
         int posX = (perso.getPosX() + (int) view.getImagePerso().getWidth() / 2) / sizeElem;
         int posY = (perso.getPosY() + (int) view.getImagePerso().getHeight() / 2) / sizeElem;
         Element element = model.getPlateau().getTabElement()[posX][posY];
@@ -182,7 +220,7 @@ public class Controller {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-                suppressionElement(element);
+                suppressionElement(element, element.getPosX(), element.getPosY());
             }
         });
     }
@@ -190,14 +228,21 @@ public class Controller {
     /*
     Supprime l'élement envoyé en paramètre
      */
-    private void suppressionElement(Element element) {
+    private void suppressionElement(Element element, int x, int y) {
+        if (element==null || !(element.getClass()==Effet.class)) {
+            for (int i = 0; i < model.getTabPerso().length; i++) {
+                Personnage perso = model.getTabPerso()[i];
+
+                if (perso.getPosX()/30 == x && perso.getPosY()/30 == y) degatJoueur(i);
+            }
+        }
 
         Element[][] elements = model.getPlateau().getTabElement();
-        if (element != null && element == elements[element.getPosX()][element.getPosY()]) {
+        if (element != null && element == elements[x][y]) {
 
             if (!(element.getClass() == Mur.class && !((Mur) element).isDestructible())) {
-                elements[element.getPosX()][element.getPosY()] = null;
-                view.supprimeImageView(element.getPosX(), element.getPosY());
+                elements[x][y] = null;
+                view.supprimeImageView(x, y);
 
                 if (element.getClass() == Mur.class) {
                     supprimeMur((Mur) element);
@@ -230,69 +275,69 @@ public class Controller {
      */
 
     private void explosionBombe(Bombe bombe) {
-        int x = model.getTabPerso()[0].getPosX() / sizeElem;
-        int y = model.getTabPerso()[0].getPosY() / sizeElem;
-        if (x == bombe.getPosX() && y == bombe.getPosY()) degatJoueur();
 
         Element[][] elements = model.getPlateau().getTabElement();
 
         bombe.getPersonnage().setNbBombeRestantes(bombe.getPersonnage().getNbBombeRestantes() + 1);
+        int x =bombe.getPosX();
+        int y =bombe.getPosY();
 
         boolean mur = false;
         Element e;
         for (int i = 1; i <= bombe.getPortee() && !mur; i++) {
-            if (x == bombe.getPosX() - i && y == bombe.getPosY()) degatJoueur();
-            e = elements[bombe.getPosX() - i][bombe.getPosY()];
+            e = elements[x - i][y];
             mur = e != null && e.getClass() == Mur.class;
-            suppressionElement(e);
+            suppressionElement(e, x-i,y);
         }
 
         mur = false;
         for (int i = 1; i <= bombe.getPortee() && !mur; i++) {
-            if (x == bombe.getPosX() + i && y == bombe.getPosY()) degatJoueur();
-            e = elements[bombe.getPosX() + i][bombe.getPosY()];
+            e = elements[x + i][y];
             mur = e != null && e.getClass() == Mur.class;
-            suppressionElement(e);
+            suppressionElement(e,x+i,y);
         }
 
         mur = false;
         for (int i = 1; i <= bombe.getPortee() && !mur; i++) {
-            if (x == bombe.getPosX() && y == bombe.getPosY() - i) degatJoueur();
-            e = elements[bombe.getPosX()][bombe.getPosY() - i];
+            e = elements[x][y - i];
             mur = e != null && e.getClass() == Mur.class;
-            suppressionElement(e);
+            suppressionElement(e, x, y-i);
         }
 
         mur = false;
         for (int i = 1; i <= bombe.getPortee() && !mur; i++) {
-            if (x == bombe.getPosX() && y == bombe.getPosY() + i) degatJoueur();
-            e = elements[bombe.getPosX()][bombe.getPosY() + i];
+            e = elements[x][y + i];
             mur = e != null && e.getClass() == Mur.class;
-            suppressionElement(e);
+            suppressionElement(e, x, y+i);
         }
     }
 
     /*
     Inflige un point de degat au joueur
      */
-    private void degatJoueur() {
-        model.getTabPerso()[0].setVie(model.getTabPerso()[0].getVie() - 1);
-        if (model.getTabPerso()[0].getVie() <= 0) System.out.println("le joueur est mort, fin de la partie");
+    private void degatJoueur(int indexPerso) {
+        model.getTabPerso()[indexPerso].setVie(model.getTabPerso()[indexPerso].getVie() - 1);
+        if (model.getTabPerso()[indexPerso].getVie() <= 0) {
+            view.supprimeImagePersonnage(indexPerso);
+            if (model.partieFini()){
+                view.afficheFenetreFin();
+                view.getScene().setOnKeyPressed(null);
+            }
+        }
     }
 
 
     /*
     Applique un ou les effets présents a l'emplacement du déplacement du personnages,
      */
-    private void appliqueEffet(Element element1, Element element2) {
-        Personnage perso = model.getTabPerso()[0];
-        if (element1 != null && element1.getClass() == Effet.class) {
+    private void appliqueEffet(Element element1, Element element2, Personnage perso) {
+        if (element1 != null && element1.getClass()==Effet.class) {
             ((Effet) element1).appliqueEffet(perso);
-            suppressionElement(element1);
+            suppressionElement(element1, element1.getPosX(), element1.getPosY());
         }
-        if (element2 != null && element2.getClass() == Effet.class && element1 != element2) {
+        if (element2 != null && element2.getClass()==Effet.class && element1 != element2) {
             ((Effet) element2).appliqueEffet(perso);
-            suppressionElement(element2);
+            suppressionElement(element2, element2.getPosX(), element2.getPosY());
         }
     }
 

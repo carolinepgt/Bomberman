@@ -21,7 +21,6 @@ public class Effet extends Element {
         Random random=new Random();
         this.typeEffet=random.nextInt(4)+1;
         String url="";
-        System.out.println(typeEffet);
         switch (typeEffet) {
             case 1: url="img2/effet.gif"; break;
             case 2: url="img2/bonusNbBombeRestantes.jpg"; break;
@@ -33,10 +32,10 @@ public class Effet extends Element {
 
     public void appliqueEffet(Personnage perso) {
         switch (typeEffet) {
-            case 1: perso.setPortee(perso.getPortee()+1); break;
+            case 1:  if (perso.getPortee()<6) perso.setPortee(perso.getPortee()+1); break;
             case 2: perso.setNbBombeRestantes(perso.getNbBombeRestantes()+1); break;
-            case 3: perso.setVie(perso.getVie()+1); break;
-            case 4: perso.setVitesse(perso.getVitesse()+1); break;
+            case 3: if (perso.getVie()<3) perso.setVie(perso.getVie()+1); break;
+            case 4: if (perso.getVitesse()<4) perso.setVitesse(perso.getVitesse()+1); break;
         }
     }
 }

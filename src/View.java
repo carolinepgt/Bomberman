@@ -1,7 +1,12 @@
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 
@@ -10,7 +15,7 @@ public class View {
 
     private Scene scene;
     private Image imagePerso;
-    private ImageView nodePerso;
+    private ImageView[] nodePerso;
     private Group terrain;
     private Model model;
     private ImageView[][] tabImageView;
@@ -37,11 +42,14 @@ public class View {
             }
         }
 
-        URL imageURL = getClass().getResource("img2/SKF_B1.PNG");
-        imagePerso = new Image(imageURL.toExternalForm());
-        nodePerso = new ImageView(imagePerso);
-        terrain.getChildren().add(nodePerso);
-        actualisePositionImage(1);
+        imagePerso = new Image("img2/SKF_B1.PNG");
+        nodePerso = new ImageView[2];
+        for (int i=0; i<nodePerso.length; i++){
+
+            nodePerso[i] = new ImageView(imagePerso);
+            terrain.getChildren().add(nodePerso[i]);
+            actualisePositionImage(1, i);
+        }
         scene = new Scene(terrain, 630, 630);
 
     }
@@ -51,13 +59,12 @@ public class View {
     }
 
     /*South=1 East=2 North=3 West=4*/
-   public void actualisePositionImage(int direction){
-       Personnage perso=model.getTabPerso()[0];
-
+   public void actualisePositionImage(int direction, int indexPerso){
+        Personnage perso=model.getTabPerso()[indexPerso];
        imagePerso=new Image("img2/SKF_B"+direction+".PNG");
-       nodePerso.setImage(imagePerso);
+       nodePerso[indexPerso].setImage(imagePerso);
 
-       nodePerso.relocate(perso.getPosX(),perso.getPosY());
+       nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
    }
 
 
@@ -75,5 +82,22 @@ public class View {
     public void supprimeImageView(int posX, int posY) {
        terrain.getChildren().remove(tabImageView[posX][posY]);
        tabImageView[posX][posY]=null;
+    }
+
+    public void afficheFenetreFin(){
+
+            Stage stage = new Stage();
+            Label modalityLabel = new Label("Partie terminé!");
+            Button closeButton = new Button("Fermer");
+            closeButton.setOnAction(e -> stage.close());
+            VBox root = new VBox();
+            root.getChildren().addAll(modalityLabel, closeButton);
+            Scene scene = new Scene(root, 200, 100);
+            stage.setScene(scene);
+            stage.show();
+    }
+
+    public void supprimeImagePersonnage(int indexPerso) {
+        terrain.getChildren().remove(nodePerso[indexPerso]);
     }
 }

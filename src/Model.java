@@ -5,8 +5,9 @@ public class Model {
     private Plateau plateau;
 
     public Model() {
-        tabPerso=new Personnage[1];
+        tabPerso=new Personnage[2];
         tabPerso[0]=new Personnage(30,30);
+        tabPerso[1]=new Personnage(570,570);
         plateau=new Plateau();
     }
 
@@ -19,4 +20,13 @@ public class Model {
     }
 
 
+
+    public boolean partieFini(){
+        int nbJoueurEnVie=0;
+        for (Personnage perso : tabPerso){
+            if (perso.estEnVie())nbJoueurEnVie++;
+        }
+        if (nbJoueurEnVie<=1) return true;
+        return false;
+    }
 }

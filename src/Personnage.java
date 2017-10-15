@@ -65,4 +65,9 @@ public class Personnage {
     public void setVie(int vie) {
         this.vie = vie;
     }
+
+    public boolean estEnVie() {
+        if (vie<=0)return false;
+        return true;
+    }
 }
