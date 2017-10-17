@@ -27,7 +27,7 @@ public class RunPartie extends Application{
         primaryStage.show();
 
 
-        File file = new File(System.getProperty("user.dir")+"/src/son/toriel.mp3");
+        File file = new File(System.getProperty("user.dir")+"/src/son/megalovania.mp3");
         Media media = new Media(file.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(INDEFINITE);

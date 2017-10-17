@@ -48,34 +48,34 @@ public class Controller {
     public void keyEventPressed(javafx.scene.input.KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                goNorth = true;
+                goNorth2 = true;
                 break;
             case DOWN:
-                goSouth = true;
-                break;
-            case LEFT:
-                goWest = true;
-                break;
-            case RIGHT:
-                goEast = true;
-                break;
-            case CONTROL:
-                poseBombe(0);
-                break;
-            case Z:
-                goNorth2=true;
-                break;
-            case S:
                 goSouth2 = true;
                 break;
-            case Q:
+            case LEFT:
                 goWest2 = true;
                 break;
-            case D:
+            case RIGHT:
                 goEast2 = true;
                 break;
-            case SPACE:
+            case NUMPAD0:
                 poseBombe(1);
+                break;
+            case Z:
+                goNorth=true;
+                break;
+            case S:
+                goSouth = true;
+                break;
+            case Q:
+                goWest = true;
+                break;
+            case D:
+                goEast = true;
+                break;
+            case SPACE:
+                poseBombe(0);
                 break;
 
         }
@@ -87,28 +87,28 @@ public class Controller {
     public void keyEventReleased(javafx.scene.input.KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                goNorth = false;
+                goNorth2 = false;
                 break;
             case DOWN:
-                goSouth = false;
-                break;
-            case LEFT:
-                goWest = false;
-                break;
-            case RIGHT:
-                goEast = false;
-                break;
-            case Z:
-                goNorth2=false;
-                break;
-            case S:
                 goSouth2 = false;
                 break;
-            case Q:
+            case LEFT:
                 goWest2 = false;
                 break;
-            case D:
+            case RIGHT:
                 goEast2 = false;
+                break;
+            case Z:
+                goNorth=false;
+                break;
+            case S:
+                goSouth = false;
+                break;
+            case Q:
+                goWest = false;
+                break;
+            case D:
+                goEast = false;
                 break;
         }
     }
