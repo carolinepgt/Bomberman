@@ -16,6 +16,7 @@ public class View {
     private Model model;
     private ImageView[][] tabImageView;
 
+
     public View(Model model) {
         this.model = model;
         creeScene();
