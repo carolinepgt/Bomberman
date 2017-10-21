@@ -9,6 +9,16 @@ public class Element {
         this.posX=posX;
         this.posY=posY;
     }
+    public Element(Boolean murDestructible, int posX, int posY) {
+        if(murDestructible){
+            this.imageURL = "img2/MurCassable.jpg";
+        } else {
+            this.imageURL = "img2/Mur2.png";
+        }
+        this.posX=posX;
+        this.posY=posY;
+    }
+
 
 
     public String getImageURL() {

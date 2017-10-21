@@ -10,12 +10,13 @@ public class Personnage {
     public Personnage(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        this.vitesse = 5;
+        this.vitesse = 2;
         this.portee=1;
         this.vie=1;
         this.nbBombeRestantes=1;
 
     }
+
 
     public int getPosX() {
         return posX;
@@ -63,5 +64,10 @@ public class Personnage {
 
     public void setVie(int vie) {
         this.vie = vie;
+    }
+
+    public boolean estEnVie() {
+        if (vie<=0)return false;
+        return true;
     }
 }

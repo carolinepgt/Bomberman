@@ -1,8 +1,14 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.File;
+
+import static javafx.scene.media.AudioClip.INDEFINITE;
 
 
 public class RunPartie extends Application{
@@ -21,10 +27,25 @@ public class RunPartie extends Application{
         primaryStage.show();
 
 
+        File file = new File(System.getProperty("user.dir")+"/src/son/megalovania.mp3");
+        Media media = new Media(file.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(INDEFINITE);
+        mediaPlayer.setVolume(0.02);
+        mediaPlayer.play();
+
+
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (model.partieFini()) {
+                    mediaPlayer.stop();
+                    this.stop();
+                }
                 controller.actualisePostion();
+                if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
+
             }
         };
         timer.start();
