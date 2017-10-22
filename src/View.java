@@ -21,7 +21,6 @@ public class View {
     private ImageView[][] tabImageView;
     public int sizeElem = 30;
 
-
     public View(Model model) {
         this.model = model;
         creeScene();

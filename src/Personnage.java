@@ -6,6 +6,7 @@ public class Personnage {
     private int nbBombeRestantes;
     private int portee;
     private int vie;
+    private boolean haveMine;
 
     public Personnage(int posX, int posY) {
         this.posX = posX;
@@ -14,7 +15,7 @@ public class Personnage {
         this.portee=1;
         this.vie=1;
         this.nbBombeRestantes=1;
-
+        this.haveMine=false;
     }
 
 
@@ -64,6 +65,14 @@ public class Personnage {
 
     public void setVie(int vie) {
         this.vie = vie;
+    }
+
+    public boolean getHaveMine() {
+        return haveMine;
+    }
+
+    public void setHaveMine(boolean haveMine) {
+        this.haveMine = haveMine;
     }
 
     public boolean estEnVie() {

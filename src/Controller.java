@@ -60,7 +60,13 @@ public class Controller {
                 goEast2 = true;
                 break;
             case NUMPAD0:
-                poseBombe(1);
+                Personnage perso = model.getTabPerso()[1];
+                if(perso.getHaveMine()){
+                    poseMine(1);
+                }
+                else {
+                    poseBombe(1);
+                }
                 break;
             case Z:
                 goNorth=true;
@@ -75,7 +81,13 @@ public class Controller {
                 goEast = true;
                 break;
             case SPACE:
-                poseBombe(0);
+                Personnage perso2 = model.getTabPerso()[0];
+                if(perso2.getHaveMine()){
+                    poseMine(0);
+                }
+                else {
+                    poseBombe(0);
+                }
                 break;
 
         }
@@ -117,7 +129,7 @@ public class Controller {
     /*
     Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
      */
-    public void actualisePostion() {
+    public void actualisePosition() {
         Element[][] elements = model.getPlateau().getTabElement();
         int indexPerso=0;
         for (Personnage perso:model.getTabPerso()){
@@ -133,11 +145,16 @@ public class Controller {
                 for (int i = 0; i < perso.getVitesse(); i++) {
                     Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() - 1) / sizeElem];
                     Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() - 1) / sizeElem];
-                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableHD)) {
+                    if ((element1 == null || element1.getClass() == Effet.class || element1.getClass() == Mine.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2.getClass() == Mine.class || element2 == bombeProbableHD)) {
                         perso.setPosY(perso.getPosY() - 1);
-
                         view.actualisePositionImage(3, indexPerso);
                         appliqueEffet(element1, element2, perso);
+                        if(element1 != null && element1.getClass()== Mine.class) {
+                            declencheMine((Mine)element1,indexPerso);
+                        }
+                        else if ( element2 != null && element2.getClass()== Mine.class){
+                            declencheMine((Mine)element2,indexPerso);
+                        }
                     }
                 }
             }
@@ -145,10 +162,16 @@ public class Controller {
                 for (int i = 0; i < perso.getVitesse(); i++) {
                     Element element1 = elements[(perso.getPosX() + width + 1) / sizeElem][perso.getPosY() / sizeElem];
                     Element element2 = elements[(perso.getPosX() + width + 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
-                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHD) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
+                    if ((element1 == null || element1.getClass() == Effet.class || element1.getClass() == Mine.class || element1 == bombeProbableHD) && (element2 == null || element2.getClass() == Effet.class || element2.getClass() == Mine.class || element2 == bombeProbableBD)) {
                         perso.setPosX(perso.getPosX() + 1);
                         view.actualisePositionImage(2, indexPerso);
                         appliqueEffet(element1, element2, perso);
+                        if(element1 != null && element1.getClass()== Mine.class) {
+                            declencheMine((Mine)element1,indexPerso);
+                        }
+                        else if ( element2 != null && element2.getClass()== Mine.class){
+                            declencheMine((Mine)element2,indexPerso);
+                        }
                     }
                 }
 
@@ -157,10 +180,16 @@ public class Controller {
                 for (int i = 0; i < perso.getVitesse(); i++) {
                     Element element1 = elements[perso.getPosX() / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
                     Element element2 = elements[(perso.getPosX() + width) / sizeElem][(perso.getPosY() + height + 1) / sizeElem];
-                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableBG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBD)) {
+                    if ((element1 == null || element1.getClass() == Effet.class || element1.getClass() == Mine.class || element1 == bombeProbableBG) && (element2 == null || element2.getClass() == Effet.class || element2.getClass() == Mine.class || element2 == bombeProbableBD)) {
                         perso.setPosY(perso.getPosY() + 1);
                         view.actualisePositionImage(1, indexPerso);
                         appliqueEffet(element1, element2, perso);
+                        if(element1 != null && element1.getClass()== Mine.class) {
+                            declencheMine((Mine)element1,indexPerso);
+                        }
+                        else if ( element2 != null && element2.getClass()== Mine.class){
+                            declencheMine((Mine)element2,indexPerso);
+                        }
                     }
                 }
             }
@@ -168,16 +197,31 @@ public class Controller {
                 for (int i = 0; i < perso.getVitesse(); i++) {
                     Element element1 = elements[(perso.getPosX() - 1) / sizeElem][perso.getPosY() / sizeElem];
                     Element element2 = elements[(perso.getPosX() - 1) / sizeElem][(perso.getPosY() + height) / sizeElem];
-                    if ((element1 == null || element1.getClass() == Effet.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2 == bombeProbableBG)) {
+                    if ((element1 == null || element1.getClass() == Effet.class || element1.getClass() == Mine.class || element1 == bombeProbableHG) && (element2 == null || element2.getClass() == Effet.class || element2.getClass() == Mine.class || element2 == bombeProbableBG)) {
                         perso.setPosX(perso.getPosX() - 1);
                         view.actualisePositionImage(4, indexPerso);
-                        appliqueEffet(element1, element2,perso);
+                        appliqueEffet(element1, element2, perso);
+                        if(element1 != null && element1.getClass()== Mine.class) {
+                            declencheMine((Mine)element1,indexPerso);
+                        }
+                        else if ( element2 != null && element2.getClass()== Mine.class){
+                            declencheMine((Mine)element2,indexPerso);
+                        }
                     }
                 }
             }
             indexPerso++;
         }
+    }
 
+    public void declencheMine(Mine m,int indexPerso){
+        if(m.getVieMine()==0){
+            degatJoueur(indexPerso);
+            suppressionElement(m,m.getPosX(),m.getPosY());
+        }
+        else {
+            m.setVieMine(m.getVieMine()-1);
+        }
     }
 
     /*
@@ -195,6 +239,24 @@ public class Controller {
             element = new Bombe(perso, posX, posY);
             model.getPlateau().setElement(element, posX, posY);
             animationBombe((Bombe) element);
+        }
+    }
+
+    private void poseMine(int indexPerso) {
+
+        Personnage perso = model.getTabPerso()[indexPerso];
+        if (!perso.estEnVie()) return;
+        int posX = (perso.getPosX() + (int) view.getImagePerso().getWidth() / 2) / sizeElem;
+        int posY = (perso.getPosY() + (int) view.getImagePerso().getHeight() / 2) / sizeElem;
+        Element element = model.getPlateau().getTabElement()[posX][posY];
+
+        if (perso.getHaveMine() && element == null) {
+            element = new Mine(posX, posY);
+            model.getPlateau().setElement(element, posX, posY);
+            ImageView mine = new ImageView(new Image(element.getImageURL()));
+            mine.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
+            view.insereElement(mine, element.getPosX(), element.getPosY());
+            perso.setHaveMine(false);
         }
     }
 
