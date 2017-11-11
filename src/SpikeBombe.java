@@ -1,25 +1,13 @@
-
-public class Bombe extends Element {
-
-    protected Personnage personnage;
-    protected int portee;
-
-    public Bombe(Personnage perso, int posX, int posY){
-        super("img2/bomb.png",posX,posY);
-        this.personnage=perso;
-        portee=perso.getPortee();
-        perso.setNbBombeRestantes(perso.getNbBombeRestantes()-1);
+/**
+ * Created by Guillaume on 11/11/2017.
+ */
+public class SpikeBombe extends  Bombe{
+    public SpikeBombe(Personnage perso, int posX, int posY) {
+        super(perso, posX, posY);
+        //setImageURL("spikeBombe.jpg");
     }
 
-    public Personnage getPersonnage() {
-        return personnage;
-    }
-
-
-    public int getPortee() {
-        return portee;
-    }
-
+    @Override
     public int[] explosion(Plateau plateau) {
         Element[][] elements = plateau.getTabElement();
         int[] explosion=new int[4];
@@ -37,12 +25,13 @@ public class Bombe extends Element {
                     case 2: e = elements[x][y + porteeReel]; break;
                     case 3: e = elements[x - porteeReel][y]; break;
                 }
-                mur = e!=null && e instanceof Mur;
+                mur = e!=null && e instanceof Mur && !((Mur) e).isDestructible();
             }
 
             if (mur && !((Mur)e).isDestructible()) porteeReel--;
             explosion[i]=porteeReel;
         }
         return explosion;
+
     }
 }

@@ -9,17 +9,20 @@ public class Personnage {
     private int portee;
     private int vie;
     private boolean haveMine;
+    private int nbSpikeBombe;
 
     public Personnage(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        this.width=28;
-        this.height=28;
-        this.vitesse = 2;
-        this.portee=1;
-        this.vie=1;
-        this.nbBombeRestantes=1;
-        this.haveMine=false;
+        width=28;
+        height=28;
+        vitesse = 2;
+        portee=1;
+        vie=1;
+        nbBombeRestantes=1;
+        haveMine=false;
+        nbSpikeBombe=1;
+
     }
 
 
@@ -135,15 +138,23 @@ public class Personnage {
     /*
     Si c'est possible pose une bombe à la position du joueur
      */
-    public Bombe poseBombe(Element[][] elements) {
+    public Bombe poseBombe(Element[][] elements, int typeBombe) {
         int sizeElem=Element.size;
         if (!estEnVie()) return null;
         int x = (posX + width / 2) / sizeElem;
         int y = (posY + height / 2) / sizeElem;
         Element element = elements[x][y];
 
+
         if (getNbBombeRestantes() > 0 && element == null) {
-            Bombe bombe = new Bombe(this, x, y);
+            Bombe bombe=null;
+            if (typeBombe==0){
+                bombe = new Bombe(this, x, y);
+            }
+            if (typeBombe==1 && nbSpikeBombe>0){
+                bombe = new SpikeBombe(this, x, y);
+                nbSpikeBombe--;
+            }
             elements[x][y]=bombe;
             return bombe;
         }
