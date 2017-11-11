@@ -43,7 +43,7 @@ public class RunPartie extends Application{
                     mediaPlayer.stop();
                     this.stop();
                 }
-                controller.actualisePosition();
+                controller.actualisePostion();
                 if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
 
             }
