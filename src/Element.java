@@ -1,5 +1,6 @@
 
 public class Element {
+    static int size =30;
     private String imageURL;
     private int posX;
     private int posY;
