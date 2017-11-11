@@ -1,8 +1,8 @@
 
 public class Bombe extends Element {
 
-    private Personnage personnage;
-    private int portee;
+    protected Personnage personnage;
+    protected int portee;
 
     public Bombe(Personnage perso, int posX, int posY){
         super("img2/bomb.png",posX,posY);

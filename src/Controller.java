@@ -62,7 +62,10 @@ public class Controller {
                 goWest[1] = true;
                 break;
             case NUMPAD0:
-                toucheBombe(1);
+                toucheBombe(1, 0);
+                break;
+            case NUMPAD1:
+                toucheBombe(1, 1);
                 break;
             case Z:
                 goNorth[0]=true;
@@ -77,7 +80,10 @@ public class Controller {
                 goWest[0] = true;
                 break;
             case SPACE:
-                toucheBombe(0);
+                toucheBombe(0, 0);
+                break;
+            case C:
+                toucheBombe(0, 1);
                 break;
 
         }
@@ -130,9 +136,9 @@ public class Controller {
 
     }
 
-    private void toucheBombe(int i) {
-        Bombe bombe = model.getTabPerso()[i].poseBombe(model.getPlateau().getTabElement());
-        if (bombe!=null) {
+    private void toucheBombe(int i, int typeBombe) {
+        Bombe bombe = model.getTabPerso()[i].poseBombe(model.getPlateau().getTabElement(), typeBombe);
+        if (bombe!=null ) {
             ImageView iVBombe = new ImageView(new Image(bombe.getImageURL()));
             iVBombe.relocate(bombe.getPosX() * sizeElem, bombe.getPosY() * sizeElem);
             view.insereElement(iVBombe, bombe.getPosX(), bombe.getPosY());
@@ -180,7 +186,7 @@ public class Controller {
                     supprimeMur((Mur) element);
                 }
 
-                if (element.getClass() == Bombe.class) {
+                if (element.isBombe()) {
                     explosionBombe((Bombe) element);
                 }
 

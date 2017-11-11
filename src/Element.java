@@ -38,4 +38,8 @@ public class Element {
         return posY;
     }
 
+    public boolean isBombe(){
+        return this instanceof Bombe || this instanceof SpikeBombe;
+    }
+
 }
