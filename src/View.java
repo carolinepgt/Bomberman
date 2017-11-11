@@ -1,4 +1,9 @@
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,8 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class View {
@@ -95,6 +102,119 @@ public class View {
             Scene scene = new Scene(root, 200, 100);
             stage.setScene(scene);
             stage.show();
+    }
+
+    /*
+    * explosion[4][rayonExplo]
+    *  0 : North
+    *  1 : East
+    *  2 : South
+    *  3 : West
+    * */
+    public void afficheRange(int[] explosion, Bombe bombe) {
+        ParallelTransition animeRayon = new ParallelTransition();
+        ArrayList listEventImg = new ArrayList();
+        ArrayList listImg = new ArrayList<ImageView>();
+
+        ImageView image = null;
+        int rayon;
+
+        rayon = explosion[0];
+        for (int i = 0; i<rayon;i++) {
+            if (i == 0) {
+                image = new ImageView(new Image("img2/ExploOrange0.jpg"));
+            }else if(i<rayon-1){
+                image = new ImageView(new Image("img2/ExplosionOrange1V.png"));
+            }else {
+                image = new ImageView(new Image("img2/ExplosionOrange2Vh.png"));
+            }
+
+            terrain.getChildren().add(image);
+            System.out.println("x : "+ bombe.getPosX() * sizeElem+ " y : "+(bombe.getPosY()-i) * sizeElem);
+
+            image.relocate(bombe.getPosX() * sizeElem, (bombe.getPosY()-i) * sizeElem);
+
+
+            FadeTransition apparition = new FadeTransition(Duration.seconds(0.5), image);
+            apparition.setFromValue(1.0);
+            apparition.setToValue(0.1);
+
+            listEventImg.add(apparition);
+            listImg.add(image);
+
+        }
+
+        rayon = explosion[1];
+        for (int i = 1; i<rayon;i++) {
+            if(i<rayon-1){
+                image = new ImageView(new Image("img2/ExplosionOrange1H.png"));
+            } else {
+                image = new ImageView(new Image("img2/ExplosionOrange2Hd.png"));
+            }
+
+            terrain.getChildren().add(image);
+            image.relocate((bombe.getPosX()+i) * sizeElem, bombe.getPosY() * sizeElem);
+
+            FadeTransition apparition = new FadeTransition(Duration.seconds(0.5), image);
+            apparition.setFromValue(1.0);
+            apparition.setToValue(0.1);
+            listEventImg.add(apparition);
+
+            listImg.add(image);
+        }
+
+        rayon = explosion[2];
+        for (int i = 1; i<rayon;i++) {
+            if(i<rayon-1){
+                image = new ImageView(new Image("img2/ExplosionOrange1V.png"));
+            } else {
+                image = new ImageView(new Image("img2/ExplosionOrange2Vb.png"));
+            }
+
+            terrain.getChildren().add(image);
+            image.relocate(bombe.getPosX() * sizeElem, (bombe.getPosY()+i) * sizeElem);
+
+            FadeTransition apparition = new FadeTransition(Duration.seconds(0.5), image);
+            apparition.setFromValue(1.0);
+            apparition.setToValue(0.1);
+            listEventImg.add(apparition);
+
+            listImg.add(image);
+        }
+
+        rayon = explosion[3];
+        for (int i = 1; i<rayon;i++) {
+            if(i<rayon-1){
+                image = new ImageView(new Image("img2/ExplosionOrange1H.png"));
+            } else {
+                image = new ImageView(new Image("img2/ExplosionOrange2Hg.png"));
+            }
+            terrain.getChildren().add(image);
+            image.relocate((bombe.getPosX()-i) * sizeElem, bombe.getPosY() * sizeElem);
+
+            FadeTransition apparition = new FadeTransition(Duration.seconds(0.5), image);
+            apparition.setFromValue(1.0);
+            apparition.setToValue(0.1);
+            listEventImg.add(apparition);
+
+            listImg.add(image);
+        }
+
+
+        animeRayon.getChildren().addAll(listEventImg);
+        animeRayon.play();
+
+        animeRayon.getChildren().removeAll();
+
+        animeRayon.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                terrain.getChildren().removeAll(listImg);
+            }
+        });
+
+
+        System.out.println("----------------------------");
     }
 
     public void supprimeImagePersonnage(int indexPerso) {
