@@ -32,5 +32,6 @@ public class SpikeBombe extends  Bombe{
             explosion[i]=porteeReel;
         }
         return explosion;
+
     }
 }
