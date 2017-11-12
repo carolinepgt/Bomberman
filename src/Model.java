@@ -6,8 +6,8 @@ public class Model {
 
     public Model() {
         tabPerso=new Personnage[2];
-        tabPerso[0]=new Personnage(30,30);
-        tabPerso[1]=new Personnage(570,570);
+        tabPerso[0]=new Personnage(30,30, "Bleu");
+        tabPerso[1]=new Personnage(570,570, "Orange");
         plateau=new Plateau();
     }
 

@@ -49,11 +49,10 @@ public class View {
             }
         }
 
-        imagePerso = new Image("img2/SKF_B1.PNG");
         nodePerso = new ImageView[2];
         for (int i=0; i<nodePerso.length; i++){
 
-            nodePerso[i] = new ImageView(imagePerso);
+            nodePerso[i] = new ImageView(new Image("img2/SKF_"+model.getTabPerso()[i].getCouleur()+"1.PNG"));
             terrain.getChildren().add(nodePerso[i]);
             actualisePositionImage(1, i);
         }
@@ -67,8 +66,8 @@ public class View {
 
     /*South=1 East=2 North=3 West=4*/
    public void actualisePositionImage(int direction, int indexPerso){
-        Personnage perso=model.getTabPerso()[indexPerso];
-       imagePerso=new Image("img2/SKF_B"+direction+".PNG");
+       Personnage perso=model.getTabPerso()[indexPerso];
+       imagePerso=new Image("img2/SKF_"+perso.getCouleur()+direction+".PNG");
        nodePerso[indexPerso].setImage(imagePerso);
 
        nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
@@ -91,19 +90,6 @@ public class View {
        tabImageView[posX][posY]=null;
     }
 
-    public void afficheFenetreFin(){
-
-            Stage stage = new Stage();
-            Label modalityLabel = new Label("Partie terminé!");
-            Button closeButton = new Button("Fermer");
-            closeButton.setOnAction(e -> stage.close());
-            VBox root = new VBox();
-            root.getChildren().addAll(modalityLabel, closeButton);
-            Scene scene = new Scene(root, 200, 100);
-            stage.setScene(scene);
-            stage.show();
-    }
-
     /*
     * explosion[4][rayonExplo]
     *  0 : North
@@ -111,22 +97,21 @@ public class View {
     *  2 : South
     *  3 : West
     * */
-    public void afficheRange(int[] explosion, Bombe bombe) {
+    public void afficheRange(int[] explosion, Bombe bombe, String couleurPerso) {
         ParallelTransition animeRayon = new ParallelTransition();
         ArrayList listEventImg = new ArrayList();
         ArrayList listImg = new ArrayList<ImageView>();
-
         ImageView image = null;
         int rayon;
 
         rayon = explosion[0];
         for (int i = 0; i<rayon;i++) {
             if (i == 0) {
-                image = new ImageView(new Image("img2/ExploOrange0.jpg"));
+                image = new ImageView(new Image("img2/Explo"+couleurPerso+"0.jpg"));
             }else if(i<rayon-1){
-                image = new ImageView(new Image("img2/ExplosionOrange1V.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"1V.png"));
             }else {
-                image = new ImageView(new Image("img2/ExplosionOrange2Vh.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"2Vh.png"));
             }
 
             terrain.getChildren().add(image);
@@ -147,9 +132,9 @@ public class View {
         rayon = explosion[1];
         for (int i = 1; i<rayon;i++) {
             if(i<rayon-1){
-                image = new ImageView(new Image("img2/ExplosionOrange1H.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"1H.png"));
             } else {
-                image = new ImageView(new Image("img2/ExplosionOrange2Hd.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"2Hd.png"));
             }
 
             terrain.getChildren().add(image);
@@ -166,9 +151,9 @@ public class View {
         rayon = explosion[2];
         for (int i = 1; i<rayon;i++) {
             if(i<rayon-1){
-                image = new ImageView(new Image("img2/ExplosionOrange1V.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"1V.png"));
             } else {
-                image = new ImageView(new Image("img2/ExplosionOrange2Vb.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"2Vb.png"));
             }
 
             terrain.getChildren().add(image);
@@ -185,9 +170,9 @@ public class View {
         rayon = explosion[3];
         for (int i = 1; i<rayon;i++) {
             if(i<rayon-1){
-                image = new ImageView(new Image("img2/ExplosionOrange1H.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"1H.png"));
             } else {
-                image = new ImageView(new Image("img2/ExplosionOrange2Hg.png"));
+                image = new ImageView(new Image("img2/Explosion"+couleurPerso+"2Hg.png"));
             }
             terrain.getChildren().add(image);
             image.relocate((bombe.getPosX()-i) * sizeElem, bombe.getPosY() * sizeElem);
@@ -219,5 +204,18 @@ public class View {
 
     public void supprimeImagePersonnage(int indexPerso) {
         terrain.getChildren().remove(nodePerso[indexPerso]);
+    }
+
+    public void afficheFenetreFin(){
+
+        Stage stage = new Stage();
+        Label modalityLabel = new Label("Partie terminé!");
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(e -> stage.close());
+        VBox root = new VBox();
+        root.getChildren().addAll(modalityLabel, closeButton);
+        Scene scene = new Scene(root, 200, 100);
+        stage.setScene(scene);
+        stage.show();
     }
 }

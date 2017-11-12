@@ -10,8 +10,9 @@ public class Personnage {
     private int vie;
     private boolean haveMine;
     private int nbSpikeBombe;
+    private String couleur;
 
-    public Personnage(int posX, int posY) {
+    public Personnage(int posX, int posY, String couleur) {
         this.posX = posX;
         this.posY = posY;
         width=28;
@@ -22,9 +23,13 @@ public class Personnage {
         nbBombeRestantes=1;
         haveMine=false;
         nbSpikeBombe=1;
+        this.couleur = couleur;
 
     }
 
+    public String getCouleur() {
+        return couleur;
+    }
 
     public int getPosX() {
         return posX;
