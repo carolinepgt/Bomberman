@@ -215,17 +215,12 @@ public class Controller {
     private void explosionBombe(Bombe bombe) {
         bombe.getPersonnage().setNbBombeRestantes(bombe.getPersonnage().getNbBombeRestantes() + 1);
         int[] explosion = bombe.explosion(model.getPlateau());
-        String couleurPerso = bombe.getPersonnage().getCouleur();
-
         for (int i=1; i<explosion[0]; i++) suppressionElement(bombe.getPosX(), bombe.getPosY()-i);
         for (int i=1; i<explosion[1]; i++) suppressionElement(bombe.getPosX()+i, bombe.getPosY());
         for (int i=1; i<explosion[2]; i++) suppressionElement(bombe.getPosX(), bombe.getPosY()+i);
         for (int i=1; i<explosion[3]; i++) suppressionElement(bombe.getPosX()-i, bombe.getPosY());
 
-        view.afficheRange(explosion, bombe, couleurPerso);
     }
-
-
 
     /*
     Inflige un point de degat au joueur
