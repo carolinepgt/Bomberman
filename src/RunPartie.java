@@ -20,9 +20,26 @@ public class RunPartie extends Application{
     public void start(Stage primaryStage) throws Exception {
 
         Model model = new Model();
-        View view = new View(model);
+        View view = new View(model,primaryStage);
         Controller controller=new Controller(view,model);
+        Stage stage = primaryStage;
+        usePartie(stage,model,view,controller);
 
+
+
+
+    }
+
+    private void exitApplication(Stage primaryStage) {
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+
+    public static void usePartie(Stage primaryStage,Model model , View view , Controller controller){
         primaryStage.setScene(view.getScene());
         primaryStage.show();
 
@@ -40,26 +57,15 @@ public class RunPartie extends Application{
             @Override
             public void handle(long now) {
                 if (model.partieFini()) {
-                    mediaPlayer.stop();
+                    //mediaPlayer.stop();
                     this.stop();
                 }
                 controller.actualisePostion();
-                if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
+                //if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
 
             }
         };
         timer.start();
-
-
-    }
-
-    private void exitApplication(Stage primaryStage) {
-
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                System.exit(0);
-            }
-        });
     }
 
 }
