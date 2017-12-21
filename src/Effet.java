@@ -34,13 +34,23 @@ public class Effet extends Element {
     public void modifieUrl(){ //-
         String url="";
         switch (typeEffet) {
-            case 1: url="img2/BonusPorteeNoel.png"; break;
-            case 2: url="img2/BonusBombeNoel.png"; break;
+            case 1: url="img2/portee30_30.png"; break;
+            case 2: url="img2/bonusBombe30_30.png"; break;
             case 3: url="img2/vie30_30.png"; break;
-            case 4: url="img2/BonusVitesseNoel.png"; break;
-            case 5: url="img2/BonusPenetratorNoel.png"; break;
+            case 4: url="img2/bonusVitesse.png"; break;
+            case 5: url="img2/penetrator30_30.png"; break;
         }
         super.setImageURL(url);
+
+        String urlNoel="";
+        switch (typeEffet) {
+            case 1: urlNoel="img2/BonusPorteeNoel.png"; break;
+            case 2: urlNoel="img2/BonusBombeNoel.png"; break;
+            case 3: urlNoel="img2/vie30_30.png"; break;
+            case 4: urlNoel="img2/BonusVitesseNoel.png"; break;
+            case 5: urlNoel="img2/BonusPenetratorNoel.png"; break;
+        }
+        super.setImageURL(urlNoel);
     }
 
     public void appliqueEffet(Personnage perso) {

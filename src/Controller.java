@@ -9,7 +9,6 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
-
 public class Controller {
 
     private View view;
@@ -234,7 +233,6 @@ public class Controller {
         }
     }
 
-
     /*
     Applique un ou les effets présents a l'emplacement du déplacement du personnages,
      */
@@ -261,5 +259,12 @@ public class Controller {
 
     private void actionQuitter(){
         view.quitter.setOnAction(event -> Platform.exit());
+    }
+
+    private void actionChangerSkin(){
+        view.changementSkin.setOnAction(event -> {
+            if (view.skinNoel) view.mettreSkinBase();
+            else view.mettreSkinNoel();
+        });
     }
 }

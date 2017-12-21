@@ -2,6 +2,7 @@
 public class Element {
     static int size =30;
     private String imageURL;
+    private String imageURLNoel;
     private int posX;
     private int posY;
 
@@ -24,6 +25,9 @@ public class Element {
 
     public String getImageURL() {
         return imageURL;
+    }
+    public String getImageURLNoel() {
+        return imageURLNoel;
     }
 
     public void setImageURL(String imageURL) {
