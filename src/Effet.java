@@ -41,16 +41,6 @@ public class Effet extends Element {
             case 5: url="img2/penetrator30_30.png"; break;
         }
         super.setImageURL(url);
-
-        String urlNoel="";
-        switch (typeEffet) {
-            case 1: urlNoel="img2/BonusPorteeNoel.png"; break;
-            case 2: urlNoel="img2/BonusBombeNoel.png"; break;
-            case 3: urlNoel="img2/vie30_30.png"; break;
-            case 4: urlNoel="img2/BonusVitesseNoel.png"; break;
-            case 5: urlNoel="img2/BonusPenetratorNoel.png"; break;
-        }
-        super.setImageURL(urlNoel);
     }
 
     public void appliqueEffet(Personnage perso) {

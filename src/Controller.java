@@ -40,7 +40,6 @@ public class Controller {
         Scene scene = view.getScene();
         scene.setOnKeyPressed(this::keyEventPressed);
         scene.setOnKeyReleased(this::keyEventReleased);
-        actionQuitter();
     }
 
     /*
@@ -257,14 +256,4 @@ public class Controller {
         }
     }
 
-    private void actionQuitter(){
-        view.quitter.setOnAction(event -> Platform.exit());
-    }
-
-    private void actionChangerSkin(){
-        view.changementSkin.setOnAction(event -> {
-            if (view.skinNoel) view.mettreSkinBase();
-            else view.mettreSkinNoel();
-        });
-    }
 }

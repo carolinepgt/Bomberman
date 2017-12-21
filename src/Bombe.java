@@ -6,7 +6,6 @@ public class Bombe extends Element {
 
     public Bombe(Personnage perso, int posX, int posY){
         super("img2/bomb.png",posX,posY);
-        setImageURLNoel("img2/BombeNoel.png");
         this.personnage=perso;
         portee=perso.getPortee();
         perso.setNbBombeRestantes(perso.getNbBombeRestantes()-1);
@@ -31,7 +30,6 @@ public class Bombe extends Element {
                 }
                 mur = e!=null && e instanceof Mur;
             }
-
             if (mur && !((Mur)e).isDestructible()) porteeReel--;
             explosion[i]=porteeReel;
         }

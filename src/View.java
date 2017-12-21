@@ -27,13 +27,8 @@ public class View {
     private Model model;
     private ImageView[][] tabImageView;
     private int sizeElem = 30;
-    MenuBar barreMenu;
-    Menu options;
-    MenuItem changementSkin, quitter, newPartie;
-    boolean skinNoel;
 
     public View(Model model) {
-        skinNoel=false;
         this.model = model;
         creeScene();
     }
@@ -62,7 +57,6 @@ public class View {
             actualisePositionImage(1, i);
         }
         scene = new Scene(terrain, 630, 630);
-        creerSousMenu();
 
     }
 
@@ -80,7 +74,6 @@ public class View {
     }
 
     public void insereElement(ImageView image, int x, int y) {
-        if (skinNoel)image.setImage(new Image(model.getPlateau().getTabElement()[x][y].getImageURLNoel()));
         tabImageView[x][y]=image;
         terrain.getChildren().add(image);
         image.toBack();
@@ -233,42 +226,5 @@ public class View {
             }
         });
 
-    }
-
-    public void creerSousMenu(){
-        sousMenu = new Group();
-        barreMenu = new MenuBar();
-        barreMenu.prefWidthProperty().bind(scene.widthProperty());
-
-        options = new Menu("Options");
-        newPartie = new MenuItem("Nouvelle Partie");
-        changementSkin = new MenuItem("Changer de skin");
-        quitter = new MenuItem("Quitter");
-
-        options.getItems().addAll(newPartie, new SeparatorMenuItem(), changementSkin, new SeparatorMenuItem(), quitter);
-        barreMenu.getMenus().addAll(options);
-
-        sousMenu.getChildren().add(barreMenu);
-        terrain.getChildren().add(sousMenu);
-    }
-
-    public void mettreSkinNoel(){
-        skinNoel=true;
-        for (int i=0; i<tabImageView.length; i++){
-            for (int j=0; j<tabImageView[i].length; j++){
-                Element e=model.getPlateau().getTabElement()[i][j];
-                tabImageView[i][j].setImage(new Image(e.getImageURLNoel()));
-            }
-        }
-    }
-
-    public void mettreSkinBase(){
-        skinNoel=false;
-        for (int i=0; i<tabImageView.length; i++){
-            for (int j=0; j<tabImageView[i].length; j++){
-                Element e=model.getPlateau().getTabElement()[i][j];
-                tabImageView[i][j].setImage(new Image(e.getImageURL()));
-            }
-        }
     }
 }
