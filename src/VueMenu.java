@@ -1,28 +1,16 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-import java.util.Optional;
-
-/**
- * Created by Guillaume on 14/12/2017.
- */
 public class VueMenu {
 
     private Scene scene;
     private Group menu;
     Group bMenu;
-
-
-
+    private ImageView fond;
 
 
     public VueMenu() {
@@ -31,6 +19,10 @@ public class VueMenu {
 
     private void creerMenu() {
         menu=new Group();
+        fond=new ImageView("img2/fond_menu.jpg");
+        fond.setFitHeight(200);
+        fond.setFitWidth(300);
+        menu.getChildren().add(fond);
         bMenu=new Group();
         Button b=new Button("Jeu en local");
         b.relocate(0,0);
@@ -42,11 +34,10 @@ public class VueMenu {
         b.relocate(0, 100);
         bMenu.getChildren().add(b);
         menu.getChildren().add(bMenu);
-        bMenu.relocate(50,100);
+        bMenu.relocate(50,50);
 
-        scene=new Scene(menu, 300, 300);
+        scene=new Scene(menu, 300, 200);
     }
-
     public Scene getScene() {
         return scene;
     }
@@ -86,7 +77,12 @@ public class VueMenu {
 
     public void creerSelectionIP() {
         bMenu.getChildren().clear();
-
+        menu.getChildren().remove(fond);
+        /*ImageView bomb=new ImageView("img2/bomb.gif");
+        bomb.setPreserveRatio(true);
+        bomb.setFitHeight(100);
+        bomb.relocate(200,100);
+        menu.getChildren().add(bomb);*/
         Text text = new Text("Adresse IP du serveur:");
         bMenu.getChildren().add(text);
         TextField tf=new TextField();
@@ -100,6 +96,12 @@ public class VueMenu {
 
     public void creerAttenteServeur(String ip) {
         bMenu.getChildren().clear();
+        menu.getChildren().remove(fond);
+        /*ImageView bomb=new ImageView("img2/bomb.gif");
+        bomb.setPreserveRatio(true);
+        bomb.setFitHeight(100);
+        bomb.relocate(200,100);
+        menu.getChildren().add(bomb);*/
         Text text = new Text("Votre adresse ip : "+ ip);
         bMenu.getChildren().add(text);
         Button b=new Button("Démarrer la recherche de client");
