@@ -1,4 +1,3 @@
-
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.util.Random;
 
 
@@ -40,8 +38,8 @@ public class Controller {
 
     public void start() {
         Scene scene = view.getScene();
-        scene.setOnKeyPressed(keyEvent -> keyEventPressed(keyEvent));
-        scene.setOnKeyReleased(keyEvent -> keyEventReleased(keyEvent));
+        scene.setOnKeyPressed(this::keyEventPressed);
+        scene.setOnKeyReleased(this::keyEventReleased);
     }
 
     /*
@@ -152,13 +150,7 @@ public class Controller {
             scaleAnimation.play();
 
 
-            scaleAnimation.setOnFinished(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    suppressionElement(bombe.getPosX(), bombe.getPosY());
-                }
-            });
+            scaleAnimation.setOnFinished(actionEvent -> suppressionElement(bombe.getPosX(), bombe.getPosY()));
         }
     }
 
@@ -231,7 +223,7 @@ public class Controller {
      */
     private void degatJoueur(int indexPerso) {
         model.getTabPerso()[indexPerso].setVie(model.getTabPerso()[indexPerso].getVie() - 1);
-        if (model.getTabPerso()[indexPerso].getVie() <= 0) {
+        if (!model.getTabPerso()[indexPerso].estEnVie()) {
             view.supprimeImagePersonnage(indexPerso);
             if (model.partieFini()){
                 view.afficheFenetreFin();
@@ -266,5 +258,3 @@ public class Controller {
     }
 
 }
-
-

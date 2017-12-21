@@ -4,7 +4,6 @@
 public class SpikeBombe extends  Bombe{
     public SpikeBombe(Personnage perso, int posX, int posY) {
         super(perso, posX, posY);
-        //setImageURL("spikeBombe.jpg");
     }
 
     @Override
@@ -28,7 +27,7 @@ public class SpikeBombe extends  Bombe{
                 mur = e!=null && e instanceof Mur && !((Mur) e).isDestructible();
             }
 
-            if (mur && !((Mur)e).isDestructible()) porteeReel--;
+            if (mur) porteeReel--;
             explosion[i]=porteeReel;
         }
         return explosion;

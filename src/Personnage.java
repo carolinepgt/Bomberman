@@ -2,6 +2,7 @@
 public class Personnage {
     static int width;
     static int height;
+    private int nj; //
     private int posX;
     private int posY;
     private int vitesse;
@@ -11,10 +12,12 @@ public class Personnage {
     private boolean haveMine;
     private int nbSpikeBombe;
     private String couleur;
+    private int changement;
 
-    public Personnage(int posX, int posY, String couleur) {
+    public Personnage(int posX, int posY, String couleur, int nj) {
         this.posX = posX;
         this.posY = posY;
+        this.nj=nj; //-
         width=28;
         height=28;
         vitesse = 2;
@@ -23,6 +26,7 @@ public class Personnage {
         nbBombeRestantes=1;
         haveMine=false;
         nbSpikeBombe=1;
+        changement=1;
         this.couleur = couleur;
 
     }
@@ -53,6 +57,14 @@ public class Personnage {
 
     public void setNbBombeRestantes(int nbBombeRestantes) {
         this.nbBombeRestantes = nbBombeRestantes;
+    }
+
+    public int getNbSpikeBombe() {
+        return nbSpikeBombe;
+    }
+
+    public void setNbSpikeBombe(int nbSpikeBombe) {
+        this.nbSpikeBombe = nbSpikeBombe;
     }
 
     public int getPortee() {
@@ -165,5 +177,28 @@ public class Personnage {
         }
         return null;
     }
+
+    public void setPosX(String posX) { //-
+        this.posX = Integer.parseInt(posX);
+    }
+
+    public void setPosY(String posY) { //-
+        this.posY = Integer.parseInt(posY);
+    }
+
+    public int getNj() { //-
+        return nj;
+    }
+
+    public void setChangement(String changement) {
+        if (!changement.equals("0")){
+            this.changement = Integer.parseInt(changement);
+        }
+    }
+
+    public int getChangement() {
+        return changement;
+    }
+
 
 }

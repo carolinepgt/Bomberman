@@ -1,5 +1,7 @@
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -21,12 +23,11 @@ import java.util.ArrayList;
 public class View {
 
     private Scene scene;
-    private Image imagePerso;
     private ImageView[] nodePerso;
     private Group terrain;
     private Model model;
     private ImageView[][] tabImageView;
-    public int sizeElem = 30;
+    private int sizeElem = 30;
 
     public View(Model model) {
         this.model = model;
@@ -49,7 +50,7 @@ public class View {
             }
         }
 
-        nodePerso = new ImageView[2];
+        nodePerso = new ImageView[model.getTabPerso().length];
         for (int i=0; i<nodePerso.length; i++){
 
             nodePerso[i] = new ImageView(new Image("img2/SKF_"+model.getTabPerso()[i].getCouleur()+"1.PNG"));
@@ -65,29 +66,23 @@ public class View {
     }
 
     /*South=1 East=2 North=3 West=4*/
-   public void actualisePositionImage(int direction, int indexPerso){
-       Personnage perso=model.getTabPerso()[indexPerso];
-       imagePerso=new Image("img2/SKF_"+perso.getCouleur()+direction+".PNG");
-       nodePerso[indexPerso].setImage(imagePerso);
+    public void actualisePositionImage(int direction, int indexPerso){
+        Personnage perso=model.getTabPerso()[indexPerso];
+        Image imagePerso = new Image("img2/SKF_" + perso.getCouleur() + direction + ".PNG");
+        nodePerso[indexPerso].setImage(imagePerso);
 
-       nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
-   }
-
-
-    public Image getImagePerso() {
-        return imagePerso;
+        nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
     }
 
-
     public void insereElement(ImageView image, int x, int y) {
-       tabImageView[x][y]=image;
-       terrain.getChildren().add(image);
-       image.toBack();
+        tabImageView[x][y]=image;
+        terrain.getChildren().add(image);
+        image.toBack();
     }
 
     public void supprimeImageView(int posX, int posY) {
-       terrain.getChildren().remove(tabImageView[posX][posY]);
-       tabImageView[posX][posY]=null;
+        terrain.getChildren().remove(tabImageView[posX][posY]);
+        tabImageView[posX][posY]=null;
     }
 
     /*
@@ -115,7 +110,6 @@ public class View {
             }
 
             terrain.getChildren().add(image);
-            System.out.println("x : "+ bombe.getPosX() * sizeElem+ " y : "+(bombe.getPosY()-i) * sizeElem);
 
             image.relocate(bombe.getPosX() * sizeElem, (bombe.getPosY()-i) * sizeElem);
 
@@ -191,15 +185,9 @@ public class View {
 
         animeRayon.getChildren().removeAll();
 
-        animeRayon.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                terrain.getChildren().removeAll(listImg);
-            }
-        });
+        animeRayon.setOnFinished(actionEvent -> terrain.getChildren().removeAll(listImg));
 
 
-        System.out.println("----------------------------");
     }
 
     public void supprimeImagePersonnage(int indexPerso) {
@@ -218,4 +206,27 @@ public class View {
         stage.setScene(scene);
         stage.show();
     }
+
+
+    public void initialisePlateauReseau() {
+        Platform.runLater(() -> {
+            for (int i=0; i<model.getTabPerso().length; i++){
+                actualisePositionImage(model.getTabPerso()[i].getChangement(),i);
+            }
+            for (int i=0; i<tabImageView.length; i++){
+                for (int j=0; j<tabImageView[i].length; j++){
+                    terrain.getChildren().remove(tabImageView[i][j]);
+                    Element e=model.getPlateau().getTabElement()[i][j];
+                    if (e==null)tabImageView[i][j]=null;
+                    else {
+                        terrain.getChildren().add(tabImageView[i][j]);
+                        tabImageView[i][j].relocate(i*sizeElem,j*sizeElem);
+                    }
+
+                }
+            }
+        });
+
+    }
+
 }
