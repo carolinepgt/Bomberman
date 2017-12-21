@@ -2,10 +2,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -21,30 +18,27 @@ public class VueMenu {
     private Group menu;
     Group bMenu;
 
-
-
-
-
     public VueMenu() {
         creerMenu();
     }
 
     private void creerMenu() {
         menu=new Group();
+
         bMenu=new Group();
-        Button b=new Button("Jeu en local");
-        b.relocate(0,0);
-        bMenu.getChildren().add(b);
-        b=new Button("Jeu en réseau");
-        b.relocate(0,50);
-        bMenu.getChildren().add(b);
-        b=new Button("Quitter");
-        b.relocate(0, 100);
-        bMenu.getChildren().add(b);
+        Button local=new Button("Jouer en local");
+        local.relocate(0, 0);
+        bMenu.getChildren().add(local);
+        Button reseau=new Button("Jouer en réseau");
+        reseau.relocate(0, 50);
+        bMenu.getChildren().add(reseau);
+        Button quitter=new Button("Quitter");
+        quitter.relocate(0, 100);
+        bMenu.getChildren().add(quitter);
         menu.getChildren().add(bMenu);
         bMenu.relocate(50,100);
 
-        scene=new Scene(menu, 300, 300);
+        scene=new Scene(menu, 200, 250);
     }
 
     public Scene getScene() {

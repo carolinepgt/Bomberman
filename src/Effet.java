@@ -9,7 +9,7 @@ public class Effet extends Element {
     2 : Bonus nbBombe;
     3 : Bonus vie;
     4 : Bonus vitesse;
-    5 : Bonus mine;
+    5 : Bonus penetrator;
 
      */
 

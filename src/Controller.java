@@ -1,4 +1,5 @@
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -40,6 +41,7 @@ public class Controller {
         Scene scene = view.getScene();
         scene.setOnKeyPressed(this::keyEventPressed);
         scene.setOnKeyReleased(this::keyEventReleased);
+        actionQuitter();
     }
 
     /*
@@ -257,4 +259,7 @@ public class Controller {
         }
     }
 
+    private void actionQuitter(){
+        view.quitter.setOnAction(event -> Platform.exit());
+    }
 }

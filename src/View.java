@@ -7,8 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -24,12 +23,17 @@ public class View {
 
     private Scene scene;
     private ImageView[] nodePerso;
-    private Group terrain;
+    private Group terrain, sousMenu;
     private Model model;
     private ImageView[][] tabImageView;
     private int sizeElem = 30;
+    MenuBar barreMenu;
+    Menu options, newPartie;
+    MenuItem changementSkin, quitter;
+    int skin;
 
     public View(Model model) {
+        skin=0;
         this.model = model;
         creeScene();
     }
@@ -58,6 +62,7 @@ public class View {
             actualisePositionImage(1, i);
         }
         scene = new Scene(terrain, 630, 630);
+        creerSousMenu();
 
     }
 
@@ -227,6 +232,23 @@ public class View {
             }
         });
 
+    }
+
+    public void creerSousMenu(){
+        sousMenu = new Group();
+        barreMenu = new MenuBar();
+        barreMenu.prefWidthProperty().bind(scene.widthProperty());
+
+        newPartie = new Menu("Nouvelle Partie");
+        options = new Menu("Options");
+        changementSkin = new MenuItem("Changer de skin");
+        quitter = new MenuItem("Quitter");
+
+        options.getItems().addAll(changementSkin, new SeparatorMenuItem(), quitter);
+        barreMenu.getMenus().addAll(options);
+
+        sousMenu.getChildren().add(barreMenu);
+        terrain.getChildren().add(sousMenu);
     }
 
 }
