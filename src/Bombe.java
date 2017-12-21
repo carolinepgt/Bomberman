@@ -5,7 +5,7 @@ public class Bombe extends Element {
     protected int portee;
 
     public Bombe(Personnage perso, int posX, int posY){
-        super("img2/bomb.png",posX,posY);
+        super("img2/BombeNoel.png",posX,posY);
         this.personnage=perso;
         portee=perso.getPortee();
         perso.setNbBombeRestantes(perso.getNbBombeRestantes()-1);

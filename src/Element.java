@@ -12,9 +12,9 @@ public class Element {
     }
     public Element(Boolean murDestructible, int posX, int posY) {
         if(murDestructible){
-            this.imageURL = "img2/MurCassable.jpg";
+            this.imageURL = "img2/GlaceCassable.png";
         } else {
-            this.imageURL = "img2/Mur2.png";
+            this.imageURL = "img2/GlaceIncassable.png";
         }
         this.posX=posX;
         this.posY=posY;
