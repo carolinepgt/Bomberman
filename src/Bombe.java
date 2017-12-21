@@ -11,15 +11,6 @@ public class Bombe extends Element {
         perso.setNbBombeRestantes(perso.getNbBombeRestantes()-1);
     }
 
-    public Personnage getPersonnage() {
-        return personnage;
-    }
-
-
-    public int getPortee() {
-        return portee;
-    }
-
     public int[] explosion(Plateau plateau) {
         Element[][] elements = plateau.getTabElement();
         int[] explosion=new int[4];
@@ -44,5 +35,19 @@ public class Bombe extends Element {
             explosion[i]=porteeReel;
         }
         return explosion;
+    }
+
+    @Override //-
+    public String toString() {
+        return "B"+personnage.getNj();
+    }
+
+    @Override
+    public boolean isBombe() {
+        return true;
+    }
+
+    public Personnage getPersonnage() {
+        return personnage;
     }
 }

@@ -1,12 +1,14 @@
-import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -20,33 +22,19 @@ import java.util.ArrayList;
 
 public class View {
 
-    private Stage primaryStage;
     private Scene scene;
-    private Image imagePerso;
     private ImageView[] nodePerso;
     private Group terrain;
-    private Group menu;
     private Model model;
     private ImageView[][] tabImageView;
-    public int sizeElem = 30;
+    private int sizeElem = 30;
 
-    public View(Model model,Stage stage) {
+    public View(Model model) {
         this.model = model;
         creeScene();
-        primaryStage=stage;
     }
 
     public void creeScene(){
-        creeMenu();
-        creeTerrain();
-        Group group = new Group();
-        group.getChildren().addAll(terrain,menu);
-        terrain.relocate(0,30);
-        scene = new Scene(group, 630, 630);
-
-    }
-
-    public void creeTerrain(){
         terrain = new Group();
 
         tabImageView=new ImageView[21][21];
@@ -62,65 +50,15 @@ public class View {
             }
         }
 
-        nodePerso = new ImageView[2];
+        nodePerso = new ImageView[model.getTabPerso().length];
         for (int i=0; i<nodePerso.length; i++){
 
             nodePerso[i] = new ImageView(new Image("img2/SKF_"+model.getTabPerso()[i].getCouleur()+"1.PNG"));
             terrain.getChildren().add(nodePerso[i]);
             actualisePositionImage(1, i);
         }
-    }
+        scene = new Scene(terrain, 630, 630);
 
-    public void creeMenu(){
-        menu = new Group();
-        MenuBar menuBar = new MenuBar();
-
-        Menu menuPartie = new Menu("Partie");
-        Menu menuAide = new Menu("Aide");
-
-        MenuItem newPartie = new MenuItem("Nouvelle Partie");
-        MenuItem newRegle = new MenuItem("Regles");
-
-        newRegle.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-
-                System.out.print("r");
-
-                menu.setVisible(true);
-            }
-        });
-
-        newPartie.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                model = new Model();
-                View view = new View(model,primaryStage);
-                Controller controller = new Controller(view,model);
-                Stage jack = new Stage();
-                primaryStage.setScene(view.getScene());
-                primaryStage.show();
-
-                AnimationTimer timer = new AnimationTimer() {
-                    @Override
-                    public void handle(long now) {
-                        if (model.partieFini()) {
-                            //mediaPlayer.stop();
-                            this.stop();
-                        }
-                        controller.actualisePostion();
-                        //if (mediaPlayer.getStatus()== MediaPlayer.Status.PAUSED) mediaPlayer.play();
-
-                    }
-                };
-                timer.start();
-                menu.setVisible(true);
-            }
-        });
-        menuPartie.getItems().addAll(newPartie);
-        menuAide.getItems().addAll(newRegle);
-
-        menuBar.setMinWidth(630);
-        menuBar.getMenus().addAll(menuPartie,menuAide);
-        menu.getChildren().addAll(menuBar);
     }
 
     public Scene getScene() {
@@ -128,29 +66,23 @@ public class View {
     }
 
     /*South=1 East=2 North=3 West=4*/
-   public void actualisePositionImage(int direction, int indexPerso){
-       Personnage perso=model.getTabPerso()[indexPerso];
-       imagePerso=new Image("img2/SKF_"+perso.getCouleur()+direction+".PNG");
-       nodePerso[indexPerso].setImage(imagePerso);
+    public void actualisePositionImage(int direction, int indexPerso){
+        Personnage perso=model.getTabPerso()[indexPerso];
+        Image imagePerso = new Image("img2/SKF_" + perso.getCouleur() + direction + ".PNG");
+        nodePerso[indexPerso].setImage(imagePerso);
 
-       nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
-   }
-
-
-    public Image getImagePerso() {
-        return imagePerso;
+        nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
     }
 
-
     public void insereElement(ImageView image, int x, int y) {
-       tabImageView[x][y]=image;
-       terrain.getChildren().add(image);
-       image.toBack();
+        tabImageView[x][y]=image;
+        terrain.getChildren().add(image);
+        image.toBack();
     }
 
     public void supprimeImageView(int posX, int posY) {
-       terrain.getChildren().remove(tabImageView[posX][posY]);
-       tabImageView[posX][posY]=null;
+        terrain.getChildren().remove(tabImageView[posX][posY]);
+        tabImageView[posX][posY]=null;
     }
 
     /*
@@ -178,7 +110,6 @@ public class View {
             }
 
             terrain.getChildren().add(image);
-            System.out.println("x : "+ bombe.getPosX() * sizeElem+ " y : "+(bombe.getPosY()-i) * sizeElem);
 
             image.relocate(bombe.getPosX() * sizeElem, (bombe.getPosY()-i) * sizeElem);
 
@@ -254,15 +185,9 @@ public class View {
 
         animeRayon.getChildren().removeAll();
 
-        animeRayon.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                terrain.getChildren().removeAll(listImg);
-            }
-        });
+        animeRayon.setOnFinished(actionEvent -> terrain.getChildren().removeAll(listImg));
 
 
-        System.out.println("----------------------------");
     }
 
     public void supprimeImagePersonnage(int indexPerso) {
@@ -281,4 +206,27 @@ public class View {
         stage.setScene(scene);
         stage.show();
     }
+
+
+    public void initialisePlateauReseau() {
+        Platform.runLater(() -> {
+            for (int i=0; i<model.getTabPerso().length; i++){
+                actualisePositionImage(model.getTabPerso()[i].getChangement(),i);
+            }
+            for (int i=0; i<tabImageView.length; i++){
+                for (int j=0; j<tabImageView[i].length; j++){
+                    terrain.getChildren().remove(tabImageView[i][j]);
+                    Element e=model.getPlateau().getTabElement()[i][j];
+                    if (e==null)tabImageView[i][j]=null;
+                    else {
+                        terrain.getChildren().add(tabImageView[i][j]);
+                        tabImageView[i][j].relocate(i*sizeElem,j*sizeElem);
+                    }
+
+                }
+            }
+        });
+
+    }
+
 }

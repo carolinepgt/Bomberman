@@ -1,4 +1,6 @@
+
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -6,31 +8,41 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import java.util.Random;
 
 
-public class Controller {
+public class ControllerReseau {
 
     private View view;
     private Model model;
 
-
+    private int nbJoueur;
     private boolean[] goNorth;
     private boolean[] goEast;
     private boolean[] goSouth;
     private boolean[] goWest;
+    private boolean[] bombe;
+    private boolean[] messageBombe;
+    private String messageServeur;
+    private int nj;
 
     public int sizeElem = 30;
+    private int[] changement;
 
-    public Controller(View view, Model model) {
+    public ControllerReseau(View view, Model model, int numJoueur) {
 
         this.view = view;
         this.model = model;
-        int nbJoueur=model.getTabPerso().length;
+        nbJoueur=model.getTabPerso().length;
         goNorth=new boolean[nbJoueur];
         goEast=new boolean[nbJoueur];
         goSouth=new boolean[nbJoueur];
         goWest=new boolean[nbJoueur];
+        bombe=new boolean[nbJoueur];
+        changement=new int[nbJoueur];
+        messageBombe=new boolean[nbJoueur];
+        messageServeur="";
+        nj=numJoueur;
+
 
         start();
 
@@ -38,8 +50,8 @@ public class Controller {
 
     public void start() {
         Scene scene = view.getScene();
-        scene.setOnKeyPressed(this::keyEventPressed);
-        scene.setOnKeyReleased(this::keyEventReleased);
+        scene.setOnKeyPressed(keyEvent -> keyEventPressed(keyEvent));
+        scene.setOnKeyReleased(keyEvent -> keyEventReleased(keyEvent));
     }
 
     /*
@@ -47,43 +59,21 @@ public class Controller {
      */
     public void keyEventPressed(javafx.scene.input.KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
-            case UP:
-                goNorth[1] = true;
-                break;
-            case RIGHT:
-                goEast[1] = true;
-                break;
-            case DOWN:
-                goSouth[1] = true;
-                break;
-            case LEFT:
-                goWest[1] = true;
-                break;
-            case NUMPAD0:
-                toucheBombe(1, 0);
-                break;
-            case NUMPAD1:
-                toucheBombe(1, 1);
-                break;
             case Z:
-                goNorth[0]=true;
+                goNorth[nj]=true;
                 break;
             case D:
-                goEast[0] = true;
+                goEast[nj] = true;
                 break;
             case S:
-                goSouth[0] = true;
+                goSouth[nj] = true;
                 break;
             case Q:
-                goWest[0] = true;
+                goWest[nj] = true;
                 break;
             case SPACE:
-                toucheBombe(0, 0);
+                bombe[nj]=true;
                 break;
-            case C:
-                toucheBombe(0, 1);
-                break;
-
         }
     }
 
@@ -93,54 +83,182 @@ public class Controller {
      */
     public void keyEventReleased(javafx.scene.input.KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
-            case UP:
-                goNorth[1] = false;
-                break;
-            case RIGHT:
-                goEast[1] = false;
-                break;
-            case DOWN:
-                goSouth[1] = false;
-                break;
-            case LEFT:
-                goWest[1] = false;
-                break;
             case Z:
-                goNorth[0]=false;
+                goNorth[nj]=false;
                 break;
             case D:
-                goEast[0] = false;
+                goEast[nj] = false;
                 break;
             case S:
-                goSouth[0] = false;
+                goSouth[nj] = false;
                 break;
             case Q:
-                goWest[0] = false;
+                goWest[nj] = false;
+                break;
+            case SPACE:
+                bombe[nj]=false;
                 break;
         }
     }
 
 
-    /*
-    Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
-     */
-    public void actualisePostion() {
-        for (int i=0; i<model.getTabPerso().length; i++){
-            Personnage perso= model.getTabPerso()[i];
-            int changement=perso.actualisePosition(model.getPlateau(),goNorth[i], goEast[i], goSouth[i], goWest[i]);
-            if (changement!=0) view.actualisePositionImage(changement, i);
-            verifieEffet(perso);
+    public void setMessageClient(String messageClient) {
+        char[] m=messageClient.toCharArray();
+        int n=Integer.parseInt(""+m[0]);
+
+        goNorth[n]=m[1]=='1';
+        goEast[n]=m[2]=='1';
+        goSouth[n]=m[3]=='1';
+        goWest[n]=m[4]=='1';
+        bombe[n]=m[5]=='1';
+    }
+
+    private void creeMessageServeur() {
+        String message="";
+        int n=0;
+        for (Personnage p : model.getTabPerso()){
+            message+=p.getPosX()+"-"+p.getPosY()+"-"+changement[n]+"-";
+            if (messageBombe[n]) {
+                message+=1;
+                messageBombe[n]=false;
+            }
+            else message+=0;
+            message+="_";
+            n++;
         }
+        messageServeur=message+"_"+model.partieFini();
+    }
+
+    public void setMessageServeur(String messageServeur) {
+        this.messageServeur = messageServeur;
+    }
+
+
+    private void analyseMessageServeur(){
+        String[] m=messageServeur.split("_");
+        String[] mp;
+        for (int i = 0 ; i<nbJoueur; i++){
+            Personnage p = model.getTabPerso()[i];
+            mp = m[i].split("-");
+            p.setPosX(mp[0]);
+            p.setPosY(mp[1]);
+            verifieEffet(p);
+            p.setChangement(mp[2]);
+            if (mp[3].equals("1")) toucheBombe(i,0);
+        }
+
+        Platform.runLater(() -> {
+            for (int i = 0; i < model.getTabPerso().length; i++) {
+                view.actualisePositionImage(model.getTabPerso()[i].getChangement(), i);
+            }
+        });
+    }
+
+
+    public String getMessageClient() {
+
+        String message=""+nj;
+        if(goNorth[nj])message+=1;
+        else message+=0;
+        if(goEast[nj])message+=1;
+        else message+=0;
+        if(goSouth[nj])message+=1;
+        else message+=0;
+        if(goWest[nj])message+=1;
+        else message+=0;
+        if(bombe[nj])message+=1;
+        else message+=0;
+        return message;
+    }
+
+    public String getMessageServeur() {
+        creeMessageServeur();
+        return messageServeur;
+    }
+
+
+
+
+
+    public String creeMessagePlateau() {
+        String message="";
+        for (int i =0; i<model.getPlateau().getTabElement().length; i++){
+            for (Element e : model.getPlateau().getTabElement()[i]){
+                if (e==null)message+="N-";
+                else message+=e.toString()+"-";
+            }
+        }
+        return message;
+    }
+
+
+    private void toObject(int x, int y, String s) {
+        Element[][] tabE=model.getPlateau().getTabElement();
+        if (s.equals("N")){
+            tabE[x][y]=null;
+            return;
+        }
+        if (s.equals("MI")){
+            tabE[x][y]=new Mur( false, x, y);
+            return;
+        }
+        for (int i=0; i<6; i++){
+            if (s.equals("M"+i)){
+                tabE[x][y]=new Mur( true, x, y, i);
+                return;
+            }
+        }
+
+    }
+
+    public void analysePlateau(String plateau){
+        String[] m;
+        m=plateau.split("-");
+        int taille = model.getPlateau().getTabElement().length;
+        for (int i=0; i<taille; i++){
+            for (int j=0; j<taille; j++){
+                toObject(i, j, m[i*taille+j]);
+            }
+        }
+
+        view.initialisePlateauReseau();
+    }
+
+
+
+
+    /****/
+
+
+
+    /*
+            Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
+             */
+    public void actualisePostion() {
+        if (nj==0) {
+            for (int i = 0; i < model.getTabPerso().length; i++) {
+                if (bombe[i]) toucheBombe(i, 0);
+                Personnage perso = model.getTabPerso()[i];
+                changement[i] = perso.actualisePosition(model.getPlateau(), goNorth[i], goEast[i], goSouth[i], goWest[i]);
+                if (changement[i] != 0) view.actualisePositionImage(changement[i], i);
+
+                verifieEffet(perso);
+
+            }
+        }
+        else if (!messageServeur.equals(""))analyseMessageServeur();
 
     }
 
     private void toucheBombe(int i, int typeBombe) {
+        bombe[i]=false;
+        messageBombe[i]=true;
+
         Bombe bombe = model.getTabPerso()[i].poseBombe(model.getPlateau().getTabElement(), typeBombe);
         if (bombe!=null ) {
             ImageView iVBombe = new ImageView(new Image(bombe.getImageURL()));
             iVBombe.relocate(bombe.getPosX() * sizeElem, bombe.getPosY() * sizeElem);
             view.insereElement(iVBombe, bombe.getPosX(), bombe.getPosY());
-
 
             ScaleTransition scaleAnimation = new ScaleTransition(Duration.seconds(2), iVBombe);
             scaleAnimation.setFromX(0.7);
@@ -150,7 +268,13 @@ public class Controller {
             scaleAnimation.play();
 
 
-            scaleAnimation.setOnFinished(actionEvent -> suppressionElement(bombe.getPosX(), bombe.getPosY()));
+            scaleAnimation.setOnFinished(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    suppressionElement(bombe.getPosX(), bombe.getPosY());
+                }
+            });
         }
     }
 
@@ -190,11 +314,9 @@ public class Controller {
     Crée un effet à la place du mur détruit
      */
     private void supprimeMur(Mur element) {
-        Random random=new Random();
-        if (random.nextInt(3)==0){
-            Effet effet = new Effet(element.getPosX(), element.getPosY());
-            model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = effet;
-            ImageView imageEffet = new ImageView(new Image(effet.getImageURL()));
+        if (element.getEffet()!=null){
+            model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = element.getEffet();
+            ImageView imageEffet = new ImageView(new Image(element.getEffet().getImageURL()));
             imageEffet.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
             view.insereElement(imageEffet, element.getPosX(), element.getPosY());
         }
@@ -223,7 +345,7 @@ public class Controller {
      */
     private void degatJoueur(int indexPerso) {
         model.getTabPerso()[indexPerso].setVie(model.getTabPerso()[indexPerso].getVie() - 1);
-        if (!model.getTabPerso()[indexPerso].estEnVie()) {
+        if (model.getTabPerso()[indexPerso].getVie() <= 0) {
             view.supprimeImagePersonnage(indexPerso);
             if (model.partieFini()){
                 view.afficheFenetreFin();
@@ -257,4 +379,10 @@ public class Controller {
         }
     }
 
+
+    public Model getModel() {
+        return model;
+    }
 }
+
+

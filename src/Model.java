@@ -4,10 +4,20 @@ public class Model {
     private Personnage[] tabPerso;
     private Plateau plateau;
 
-    public Model() {
-        tabPerso=new Personnage[2];
-        tabPerso[0]=new Personnage(30,30, "Bleu");
-        tabPerso[1]=new Personnage(570,570, "Orange");
+    public Model(int nbJoueurs) {
+        tabPerso=new Personnage[nbJoueurs];
+        switch (nbJoueurs){
+            case 4:
+                tabPerso[3]=new Personnage(30,570, "Orange", 3);
+            case 3:
+                tabPerso[2]=new Personnage(570,30, "Bleu", 2);
+            case 2:
+                tabPerso[1]=new Personnage(570,570, "Orange", 1);
+            case 1:
+                tabPerso[0]=new Personnage(30,30, "Bleu", 0);
+        }
+
+
         plateau=new Plateau();
     }
 
@@ -26,7 +36,6 @@ public class Model {
         for (Personnage perso : tabPerso){
             if (perso.estEnVie())nbJoueurEnVie++;
         }
-        if (nbJoueurEnVie<=1) return true;
-        return false;
+        return nbJoueurEnVie <= 1;
     }
 }

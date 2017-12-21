@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Effet extends Element {
-    int typeEffet;
+    private int typeEffet;
 
     /*
 
@@ -14,13 +14,24 @@ public class Effet extends Element {
      */
 
     public Effet(int posX, int posY) {
-        super( "img/effet.gif",posX, posY);
+        super( "",posX, posY);
         typeEffetCreation();
+    }
+
+
+    public Effet(int type, int posX, int posY){ //-
+        super( "",posX, posY);
+        typeEffet=type;
+        modifieUrl();
     }
 
     public void typeEffetCreation(){
         Random random=new Random();
         this.typeEffet=random.nextInt(5)+1;
+        modifieUrl();
+    }
+
+    public void modifieUrl(){ //-
         String url="";
         switch (typeEffet) {
             case 1: url="img2/BonusPorteeNoel.png"; break;
@@ -38,8 +49,12 @@ public class Effet extends Element {
             case 2: perso.setNbBombeRestantes(perso.getNbBombeRestantes()+1); break;
             case 3: if (perso.getVie()<3) perso.setVie(perso.getVie()+1); break;
             case 4: if (perso.getVitesse()<4) perso.setVitesse(perso.getVitesse()+1); break;
-            case 5: perso.setHaveMine(true); break;
-            case 6:
+            case 5: perso.setNbSpikeBombe(perso.getNbSpikeBombe()+1); break;
         }
+    }
+
+    @Override //-
+    public String toString() {
+        return ""+typeEffet;
     }
 }
