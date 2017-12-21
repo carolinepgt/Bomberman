@@ -13,14 +13,15 @@ public class Element {
     }
     public Element(Boolean murDestructible, int posX, int posY) {
         if(murDestructible){
-            this.imageURL = "img2/GlaceCassable.png";
+            this.imageURL = "img2/murCassable.jpg";
+            imageURLNoel="img2/GlaceCassable.png";
         } else {
-            this.imageURL = "img2/GlaceIncassable.png";
+            this.imageURL = "img2/Mur2.png";
+            imageURLNoel="img2/GlaceIncassable.png";
         }
         this.posX=posX;
         this.posY=posY;
     }
-
 
 
     public String getImageURL() {
@@ -32,6 +33,9 @@ public class Element {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+    public void setImageURLNoel(String imageURL) {
+        this.imageURLNoel = imageURLNoel;
     }
 
     public int getPosX() {
