@@ -3,8 +3,10 @@ public class Model {
 
     private Personnage[] tabPerso;
     private Plateau plateau;
+    int nbsJoueurs;
 
     public Model(int nbJoueurs) {
+        this.nbsJoueurs = nbJoueurs;
         if(nbJoueurs==1){
             tabPerso=new Personnage[nbJoueurs+1];
             tabPerso[1]= new Personnage_IA(570,570,"Orange",0,1);

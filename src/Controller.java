@@ -125,7 +125,9 @@ public class Controller {
     Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
      */
     public void actualisePostion() {
-        comportementIA();
+        if(model.nbsJoueurs==1){
+            comportementIA();
+        }
 
         for (int i=0; i<model.getTabPerso().length; i++){
             Personnage perso= model.getTabPerso()[i];
