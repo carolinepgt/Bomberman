@@ -5,7 +5,12 @@ public class Model {
     private Plateau plateau;
 
     public Model(int nbJoueurs) {
-        tabPerso=new Personnage[nbJoueurs];
+        if(nbJoueurs==1){
+            tabPerso=new Personnage[nbJoueurs+1];
+            tabPerso[1]= new Personnage_IA(570,570,"Orange",0,1);
+        } else {
+            tabPerso=new Personnage[nbJoueurs];
+        }
         switch (nbJoueurs){
             case 4:
                 tabPerso[3]=new Personnage(30,570, "Orange", 3);

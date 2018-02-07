@@ -3,10 +3,10 @@ public class Personnage {
     static int width;
     static int height;
     private int nj; //
-    private int posX;
-    private int posY;
-    private int vitesse;
-    private int nbBombeRestantes;
+    int posX;
+    int posY;
+    int vitesse;
+    int nbBombeRestantes;
     private int portee;
     private int vie;
     private boolean haveMine;

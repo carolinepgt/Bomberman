@@ -53,6 +53,7 @@ public class ControllerMenu {
         stage.close();
         Model model = new Model(nj);
         View view = new View(model);
+
         Controller controller=new Controller(view,model);
 
         stage.setScene(view.getScene());
