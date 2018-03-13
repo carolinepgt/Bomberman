@@ -1,7 +1,4 @@
 import javafx.animation.ScaleTransition;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +10,8 @@ public class Controller {
 
     private View view;
     private Model model;
+    private int nbJoueur;
+    private FantopacThread fantopacThread;
 
 
     private boolean[] goNorth;
@@ -26,12 +25,13 @@ public class Controller {
 
         this.view = view;
         this.model = model;
-        int nbJoueur=model.getTabPerso().length;
-        goNorth=new boolean[nbJoueur];
-        goEast=new boolean[nbJoueur];
-        goSouth=new boolean[nbJoueur];
-        goWest=new boolean[nbJoueur];
+        this.nbJoueur =model.getTabPerso().length;
+        goNorth=new boolean[nbJoueur+1];
+        goEast=new boolean[nbJoueur+1];
+        goSouth=new boolean[nbJoueur+1];
+        goWest=new boolean[nbJoueur+1];
 
+        this.fantopacThread = new FantopacThread(model,nbJoueur,this);
         start();
 
     }
@@ -129,12 +129,20 @@ public class Controller {
             comportementIA();
         }
 
+//        System.out.println("fantopacThread.getState() : "+fantopacThread.getState());
+        if(fantopacThread.getState()== Thread.State.NEW)fantopacThread.start();
+
         for (int i=0; i<model.getTabPerso().length; i++){
             Personnage perso= model.getTabPerso()[i];
             int changement=perso.actualisePosition(model.getPlateau(),goNorth[i], goEast[i], goSouth[i], goWest[i]);
-            if (changement!=0) view.actualisePositionImage(changement, i);
+            if (changement!=0)view.actualisePositionImage(changement, i);
             verifieEffet(perso);
         }
+
+
+        Fantopac fantopac = model.getFantopac();
+        int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
+        if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
     }
 
     private void toucheBombe(int i, int typeBombe) {
@@ -259,6 +267,13 @@ public class Controller {
         }
     }
 
+
+
+    /******************** Methode Fantopac******************************************************/
+
+
+
+    /******************** Methode IA ******************************************************/
     private void initDirectionIA(int i) {
         goNorth[i]=false;
         goEast[i]=false;
@@ -272,7 +287,6 @@ public class Controller {
                 Personnage_IA perso = (Personnage_IA) model.getTabPerso()[i];
                 int xPerso = perso.getPosX();
                 int yPerso = perso.getPosY();
-                System.out.println("xIA:"+ xPerso+ " yIA: "+yPerso);
 
                 //if (xPerso%30==0 && yPerso%30==0)initDirectionIA(i);
                 chercheGo(perso);
@@ -315,13 +329,13 @@ public class Controller {
         if ((perso.getPosX() % 30 == 0 && perso.getPosY() % 30 == 0)) {
 
             if(caseSafe[xIA][yIA]==0 && perso.getNbBombeRestantes()!=0) {
-                System.out.println("Mon perso a des bombe.je me tire pas");
+//                System.out.println("Mon perso a des bombe.je me tire pas");
 
                 if (diff >= 0) {
                     if (xDiff >= 0) {
-                        System.out.println("xDiff="+xDiff+" yDiff="+yDiff);
+//                        System.out.println("xDiff="+xDiff+" yDiff="+yDiff);
 
-                        System.out.println("----------------->EAST");
+//                        System.out.println("----------------->EAST");
 
                         if (xCible == xIA + 1) {
                             toucheBombe(iTabPerso, 0);
@@ -330,7 +344,7 @@ public class Controller {
                         }
                 /*goEast*/
                     } else {
-                        System.out.println("----------------->WEST");
+//                        System.out.println("----------------->WEST");
                         if (xCible == xIA - 1) {
                             toucheBombe(iTabPerso, 0);
                         } else {
@@ -340,7 +354,7 @@ public class Controller {
                     }
                 } else {
                     if (yDiff >= -2 && yDiff < 2) {
-                        System.out.println("----------------->NORTH");
+//                        System.out.println("----------------->NORTH");
                         if (yCible == yIA - 1) {
                             toucheBombe(iTabPerso, 0);
                         } else {
@@ -354,7 +368,7 @@ public class Controller {
                             northPossible(tabElement, xIA, yIA, perso, iTabPerso, caseSafe);
                         }
                     } else {
-                        System.out.println("----------------->SOUTH");
+//                        System.out.println("----------------->SOUTH");
                         if (yCible == yIA + 1) {
                             toucheBombe(iTabPerso, 0);
                         } else {
@@ -366,7 +380,7 @@ public class Controller {
                 if (perso.getNbBombeRestantes() > 0) verifPosFail(perso.getBlop(), iTabPerso, xDiff, yDiff);
 
             } else {
-                System.out.println("Jme Tiiiiiiiirrrrreeeeeeee");
+//                System.out.println("Jme Tiiiiiiiirrrrreeeeeeee");
                 if(xIA%30==0 && yIA%30==0)initDirectionIA(iTabPerso);
                 jmeTirrreeeeee(iTabPerso, perso, xCible, yCible);
             }
@@ -415,7 +429,7 @@ public class Controller {
     private boolean southPossible(Element[][] tabElement, int xIA, int yIA, Personnage_IA perso, int iTabPerso, int[][] caseSafe) {
         Element e = tabElement[xIA][yIA+1];
         if((e instanceof Mur) && ((Mur) e).isDestructible()) {
-            System.out.println("Je pose une bombe au SOUTH");
+//            System.out.println("Je pose une bombe au SOUTH");
             toucheBombe(iTabPerso,0);
             return true;
         } else if (!(e instanceof Mur) && caseSafe[xIA][yIA+1]<100){
@@ -433,7 +447,7 @@ public class Controller {
         Element e = tabElement[xIA][yIA-1];
         if((e instanceof Mur) && ((Mur) e).isDestructible()) {
             toucheBombe(iTabPerso,0);
-            System.out.println("Je pose une bombe au nord");
+//            System.out.println("Je pose une bombe au nord");
             return true;
         } else if (!(e instanceof Mur) && caseSafe[xIA][yIA-1]<100){
             modifDirectionIA(iTabPerso,"N");
@@ -448,7 +462,7 @@ public class Controller {
     private boolean westPossible(Element[][] tabElement, int xIA, int yIA, Personnage_IA perso, int iTabPerso, int[][] caseSafe) {
         Element e = tabElement[xIA-1][yIA];
         if((e instanceof Mur) && ((Mur) e).isDestructible()) {
-            System.out.println("Je pose une bombe a WEST");
+//            System.out.println("Je pose une bombe a WEST");
             toucheBombe(iTabPerso,0);
             return true;
         } else if (!(e instanceof Mur) && caseSafe[xIA-1][yIA]<100){
@@ -464,7 +478,7 @@ public class Controller {
     private boolean eastPossible(Element[][] tabElement, int xIA,int yIA, Personnage_IA perso, int iTabPerso, int[][] caseSafe) {
         Element e = tabElement[xIA+1][yIA];
         if((e instanceof Mur) && ((Mur) e).isDestructible()) {
-            System.out.println("Je pose une bombe a EAST");
+//            System.out.println("Je pose une bombe a EAST");
             toucheBombe(iTabPerso,0);
             return true;
         } else if (!(e instanceof Mur) && caseSafe[xIA+1][yIA]<100){
@@ -660,19 +674,19 @@ public class Controller {
 
             switch (choix){
                 case 0 :
-                    System.out.println("jme tire : goEAST");
+//                    System.out.println("jme tire : goEAST");
                     modifDirectionIA(iTabPerso,"E");
                     break;
                 case 1 :
-                    System.out.println("jme tire : goWEST");
+//                    System.out.println("jme tire : goWEST");
                     modifDirectionIA(iTabPerso,"W");
                     break;
                 case 2 :
-                    System.out.println("jme tire : goNORTH");
+//                    System.out.println("jme tire : goNORTH");
                     modifDirectionIA(iTabPerso,"N");
                     break;
                 case 3 :
-                    System.out.println("jme tire : goSOUTH");
+//                    System.out.println("jme tire : goSOUTH");
                     modifDirectionIA(iTabPerso,"S");
                     break;
             }
@@ -728,5 +742,40 @@ public class Controller {
             System.out.println("| N:"+goNorth[i]+" . E:"+goEast[i]+" . S:"+goSouth[i]+" . W:"+goWest[i]+" |");
             System.out.println(" ---------------------------------------\n\n");
         }
+    }
+
+
+    /******************** Getters/Setters ******************************************************/
+    public View getView() {
+        return view;
+    }
+
+    public boolean[] getGoNorth() {
+        return goNorth;
+    }
+
+    public boolean[] getGoEast() {
+        return goEast;
+    }
+
+    public boolean[] getGoSouth() {
+        return goSouth;
+    }
+
+    public boolean[] getGoWest() {
+        return goWest;
+    }
+
+    public void setGoNorthI(int indice, boolean var) {
+        goNorth[indice] = var;
+    }
+    public void setGoEastI(int indice, boolean var) {
+        goEast[indice] = var;
+    }
+    public void setGoSouthI(int indice, boolean var) {
+        goSouth[indice] = var;
+    }
+    public void setGoWestI(int indice, boolean var) {
+        goWest[indice] = var;
     }
 }

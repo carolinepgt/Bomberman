@@ -37,7 +37,7 @@ public class Effet extends Element {
             case 1: url="img2/portee30_30.png"; break;
             case 2: url="img2/bonusBombe30_30.png"; break;
             case 3: url="img2/vie30_30.png"; break;
-            case 4: url="img2/bonusVitesse.png"; break;
+            case 4: url="img2/sonic30_30.png"; break;
             case 5: url="img2/penetrator30_30.png"; break;
         }
         super.setImageURL(url);

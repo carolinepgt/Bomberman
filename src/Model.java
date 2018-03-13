@@ -2,6 +2,7 @@
 public class Model {
 
     private Personnage[] tabPerso;
+    private Fantopac fantopac;
     private Plateau plateau;
     int nbsJoueurs;
 
@@ -23,7 +24,7 @@ public class Model {
             case 1:
                 tabPerso[0]=new Personnage(30,30, "Bleu", 0);
         }
-
+        fantopac = new Fantopac(270,270);
 
         plateau=new Plateau();
     }
@@ -44,5 +45,9 @@ public class Model {
             if (perso.estEnVie())nbJoueurEnVie++;
         }
         return nbJoueurEnVie <= 1;
+    }
+
+    public Fantopac getFantopac() {
+        return fantopac;
     }
 }

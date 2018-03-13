@@ -8,6 +8,10 @@ public class Personnage_IA extends Personnage {
     private int positionTabPerso;
     String blop;
 
+    public Personnage_IA(int posX, int posY){
+        super(posX,posY);
+    }
+
     public Personnage_IA(int posX, int posY, String couleur, int nbsJ, int i){
         super(posX,posY,couleur,nbsJ);
         positionTabPerso = i;
@@ -45,7 +49,6 @@ public class Personnage_IA extends Personnage {
         if (north) {
             for (int i = 0; i < vitesse; i++) {
                 Element element1 = elements [posX/sizeElem] [(posY/sizeElem)-1];
-                System.out.println("e1: "+element1);
                 if (posX%30!=0 || posY%30!=0){
                     posY-=1;
                     modifPosition=3;

@@ -14,6 +14,20 @@ public class Personnage {
     private String couleur;
     private int changement;
 
+    public Personnage(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
+        width=28;
+        height=28;
+        vitesse = 2;
+        portee=0;
+        vie=1;
+        nbBombeRestantes=0;
+        haveMine=false;
+        nbSpikeBombe=0;
+        changement=1;
+
+    }
     public Personnage(int posX, int posY, String couleur, int nj) {
         this.posX = posX;
         this.posY = posY;

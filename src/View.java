@@ -23,6 +23,7 @@ public class View {
 
     private Scene scene;
     private ImageView[] nodePerso;
+    private ImageView imgFantopac;
     private Group terrain, sousMenu;
     private Model model;
     private ImageView[][] tabImageView;
@@ -58,6 +59,10 @@ public class View {
         }
         scene = new Scene(terrain, 630, 630);
 
+        imgFantopac = new ImageView(new Image("img2/fantopac"+1+".png"));
+        imgFantopac.setFitHeight(sizeElem);
+        imgFantopac.setFitWidth(sizeElem);
+        terrain.getChildren().add(imgFantopac);
     }
 
     public Scene getScene() {
@@ -71,6 +76,15 @@ public class View {
         nodePerso[indexPerso].setImage(imagePerso);
 
         nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
+    }
+
+    /*South=1 East=2 North=3 West=4*/
+    public void actualisePositionImageFantopac(int direction){
+        Fantopac fantopac = model.getFantopac();
+
+        imgFantopac.setImage( new Image("img2/fantopac"+direction+".png"));
+
+        imgFantopac.relocate(fantopac.getPosX(),fantopac.getPosY());
     }
 
     public void insereElement(ImageView image, int x, int y) {
@@ -227,4 +241,15 @@ public class View {
         });
 
     }
+
+//    public void afficheFantopac() {
+//
+//        Platform.runLater(new Runnable() {
+//            public void run() {
+//                Fantopac fantopac = model.getFantopac();
+//                int changementFantopac = fantopac.actualisePosition(model.getPlateau(), controller.getGoNorth()[nbJoueur], controller.getGoEast()[nbJoueur], controller.getGoSouth()[nbJoueur], controller.getGoWest()[nbJoueur]);
+//                if (changementFantopac != 0) controller.getView().actualisePositionImageFantopac(changementFantopac);
+//            }
+//        });
+//    }
 }
