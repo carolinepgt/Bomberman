@@ -20,12 +20,16 @@ public class FantopacThread extends Thread {
     public void run(){
         while(true){
             if(model.getFantopac().posX%30==0 && model.getFantopac().posY%30==0)comportementFantopac();
+//            System.out.println("Je suis tjs en vie !!!!!");
 
             try {
-                sleep(20);
+                sleep(15);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
+                break;
             }
+
+            if(!controller.getView().getScene().getWindow().isShowing())break;
         }
     }
     /* ! Tout thread doit avoir une méthode run() sans paramètre, sans valeur de retour.
@@ -45,7 +49,7 @@ public class FantopacThread extends Thread {
         int posX = fantopac.posX;
         int posY = fantopac.posY;
 
-        System.out.println("pos X :"+posX+" \npos Y : "+posY+"\n");
+//        System.out.println("pos X :"+posX+" \npos Y : "+posY+"\n");
 
         if(posX>=570){
 //            System.out.println("Bord -->");

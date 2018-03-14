@@ -2,6 +2,7 @@ import javafx.animation.ScaleTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -83,7 +84,6 @@ public class Controller {
             case C:
                 toucheBombe(0, 1);
                 break;
-
         }
     }
 
@@ -142,6 +142,8 @@ public class Controller {
         Fantopac fantopac = model.getFantopac();
         int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
         if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
+
+//        if(model.partieFini() || view.getScene().getWindow().getOnCloseRequest().==null)fantopacThread.interrupt();
     }
 
     private void toucheBombe(int i, int typeBombe) {
