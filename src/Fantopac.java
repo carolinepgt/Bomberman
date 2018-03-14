@@ -45,4 +45,9 @@ public class Fantopac extends Personnage_IA{
         }
         return modifPosition;
     }
+
+    public int[] getPosFantopac() {
+        int[] tabPos = {posX,posY};
+        return tabPos;
+    }
 }

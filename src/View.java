@@ -28,6 +28,8 @@ public class View {
     private Model model;
     private ImageView[][] tabImageView;
     private int sizeElem = 30;
+    private String skin = "SKF_";
+
 
     public View(Model model) {
         this.model = model;
@@ -59,6 +61,7 @@ public class View {
         }
         scene = new Scene(terrain, 630, 630);
 
+
         imgFantopac = new ImageView(new Image("img2/fantopac"+1+".png"));
         imgFantopac.setFitHeight(sizeElem);
         imgFantopac.setFitWidth(sizeElem);
@@ -71,8 +74,15 @@ public class View {
 
     /*South=1 East=2 North=3 West=4*/
     public void actualisePositionImage(int direction, int indexPerso){
+        if(!model.isPartiePacman()){
+            skin = "SKF_";
+        } else {
+            terrain.getChildren().remove(imgFantopac);
+            skin = "pacman_";
+        }
+
         Personnage perso=model.getTabPerso()[indexPerso];
-        Image imagePerso = new Image("img2/SKF_" + perso.getCouleur() + direction + ".PNG");
+        Image imagePerso = new Image("img2/"+skin + perso.getCouleur() + direction + ".png");
         nodePerso[indexPerso].setImage(imagePerso);
 
         nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());

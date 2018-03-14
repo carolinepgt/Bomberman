@@ -142,8 +142,6 @@ public class Controller {
         Fantopac fantopac = model.getFantopac();
         int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
         if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
-
-//        if(model.partieFini() || view.getScene().getWindow().getOnCloseRequest().==null)fantopacThread.interrupt();
     }
 
     private void toucheBombe(int i, int typeBombe) {
@@ -196,6 +194,15 @@ public class Controller {
 
             }
         }
+
+        /**Méthode pour détecter le fantopac**/
+        int posFantopac[] = model.getFantopac().getPosFantopac();
+        System.out.println("Pos Fantopac x:"+posFantopac[0]+" y:"+posFantopac[1]);
+        System.out.println("x:"+x+" y:"+y);
+        if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac(nbJoueur);
+
+
+
     }
 
     /*
@@ -272,6 +279,23 @@ public class Controller {
 
     /******************** Methode Fantopac******************************************************/
     //Gérer par le Thread du Fantopac --> la class FantopacThread.java
+
+    /*
+    Inflige un point de degat Fantopac (le tue)
+     */
+    private void degatFantopac(int indexPerso) {
+        model.getFantopac().setVie(model.getFantopac().getVie() - 1);
+        if (!model.getFantopac().estEnVie()) {
+//            view.supprimeImagePersonnage(indexPerso);
+
+            model.setPartiePacman(true);
+            goPartieFantopac();
+        }
+    }
+
+    private void goPartieFantopac() {
+
+    }
 
 
     /******************** Methode IA ******************************************************/
@@ -779,4 +803,5 @@ public class Controller {
     public void setGoWestI(int indice, boolean var) {
         goWest[indice] = var;
     }
+
 }

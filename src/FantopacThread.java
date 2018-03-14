@@ -20,7 +20,6 @@ public class FantopacThread extends Thread {
     public void run(){
         while(true){
             if(model.getFantopac().posX%30==0 && model.getFantopac().posY%30==0)comportementFantopac();
-//            System.out.println("Je suis tjs en vie !!!!!");
 
             try {
                 sleep(15);
@@ -29,11 +28,10 @@ public class FantopacThread extends Thread {
                 break;
             }
 
-            if(!controller.getView().getScene().getWindow().isShowing())break;
+            if(!controller.getView().getScene().getWindow().isShowing() || model.getFantopac().getVie()<1)break;
+            if(model.isPartiePacman())break;
         }
     }
-    /* ! Tout thread doit avoir une méthode run() sans paramètre, sans valeur de retour.
-    C'est la que débute l'exec*/
 
 
     private void initDirectionFantopac() {
@@ -66,7 +64,7 @@ public class FantopacThread extends Thread {
         } else {
             Random loto = new Random();
             int valeur = loto.nextInt(4);
-
+            valeur = 1;
             if(valeur==1){
                 controller.setGoNorthI(nbJoueur,true);
             } else if(valeur==2){

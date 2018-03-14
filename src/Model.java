@@ -5,6 +5,8 @@ public class Model {
     private Fantopac fantopac;
     private Plateau plateau;
     int nbsJoueurs;
+    private boolean partiePacman;
+
 
     public Model(int nbJoueurs) {
         this.nbsJoueurs = nbJoueurs;
@@ -25,7 +27,7 @@ public class Model {
                 tabPerso[0]=new Personnage(30,30, "Bleu", 0);
         }
         fantopac = new Fantopac(270,270);
-
+        partiePacman = false;
         plateau=new Plateau();
     }
 
@@ -49,5 +51,13 @@ public class Model {
 
     public Fantopac getFantopac() {
         return fantopac;
+    }
+
+    public void setPartiePacman(boolean partiePacman) {
+        this.partiePacman = partiePacman;
+    }
+
+    public boolean isPartiePacman() {
+        return partiePacman;
     }
 }
