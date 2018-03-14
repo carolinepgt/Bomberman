@@ -129,7 +129,6 @@ public class Controller {
             comportementIA();
         }
 
-//        System.out.println("fantopacThread.getState() : "+fantopacThread.getState());
         if(fantopacThread.getState()== Thread.State.NEW)fantopacThread.start();
 
         for (int i=0; i<model.getTabPerso().length; i++){
@@ -270,7 +269,7 @@ public class Controller {
 
 
     /******************** Methode Fantopac******************************************************/
-
+    //Gérer par le Thread du Fantopac --> la class FantopacThread.java
 
 
     /******************** Methode IA ******************************************************/

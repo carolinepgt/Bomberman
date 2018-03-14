@@ -82,7 +82,8 @@ public class View {
     public void actualisePositionImageFantopac(int direction){
         Fantopac fantopac = model.getFantopac();
 
-        imgFantopac.setImage( new Image("img2/fantopac"+direction+".png"));
+        /*Autre skin : trump  gostBlack  ghost_   pacfant_Vert_  pacfant_Rouge_  fantopac*/
+        imgFantopac.setImage( new Image("img2/pacfant_Vert_"+direction+".png"));
 
         imgFantopac.relocate(fantopac.getPosX(),fantopac.getPosY());
     }
