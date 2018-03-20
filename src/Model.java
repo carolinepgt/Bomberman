@@ -2,17 +2,20 @@
 public class Model {
 
     private Personnage[] tabPerso;
+    private Fantome[] tabFantome;
     private Fantopac fantopac;
     private Plateau plateau;
     int nbsJoueurs;
     private boolean partiePacman;
 
 
+
     public Model(int nbJoueurs) {
         this.nbsJoueurs = nbJoueurs;
         if(nbJoueurs==1){
             tabPerso=new Personnage[nbJoueurs+1];
-            tabPerso[1]= new Personnage_IA(570,570,"Orange",0,1);
+//            tabPerso[1]= new Personnage_IA(570,570,"Orange",0,1);
+            tabPerso[1]=new Personnage(60,570, "Orange", 3);
         } else {
             tabPerso=new Personnage[nbJoueurs];
         }
@@ -26,7 +29,7 @@ public class Model {
             case 1:
                 tabPerso[0]=new Personnage(30,30, "Bleu", 0);
         }
-        fantopac = new Fantopac(270,270);
+        fantopac = new Fantopac(270,270, "trump");
         partiePacman = false;
         plateau=new Plateau();
     }
@@ -59,5 +62,13 @@ public class Model {
 
     public boolean isPartiePacman() {
         return partiePacman;
+    }
+
+    public Fantome[] getTabFantome() {
+        return tabFantome;
+    }
+
+    public void setTabFantome(Fantome[] tabFantom) {
+        this.tabFantome = tabFantom;
     }
 }

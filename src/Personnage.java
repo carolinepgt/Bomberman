@@ -14,7 +14,7 @@ public class Personnage {
     private String couleur;
     private int changement;
 
-    public Personnage(int posX, int posY) {
+    public Personnage(int posX, int posY,String couleur) {
         this.posX = posX;
         this.posY = posY;
         width=28;
@@ -26,8 +26,9 @@ public class Personnage {
         haveMine=false;
         nbSpikeBombe=0;
         changement=1;
-
+        this.couleur = couleur;
     }
+
     public Personnage(int posX, int posY, String couleur, int nj) {
         this.posX = posX;
         this.posY = posY;

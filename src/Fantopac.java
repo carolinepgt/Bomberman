@@ -8,12 +8,11 @@ public class Fantopac extends Personnage_IA{
     ImageView imgFantopac = new ImageView(new Image("img2/fantopac2.png"));
 
 
-    public Fantopac(int posX, int posY) {
-        super(posX,posY);
+    public Fantopac(int posX, int posY,String skin) {
+        super(posX,posY,skin);
     }
 
     public int actualisePosition(Plateau plateau, boolean north, boolean east, boolean south, boolean west) {
-
         Element[][] elements=plateau.getTabElement();
         int sizeElem= Element.size;
         int modifPosition=0;

@@ -23,10 +23,11 @@ public class View {
 
     private Scene scene;
     private ImageView[] nodePerso;
+    private ImageView[][] tabImageView;
     private ImageView imgFantopac;
+    private ImageView[] imagesFantome;
     private Group terrain, sousMenu;
     private Model model;
-    private ImageView[][] tabImageView;
     private int sizeElem = 30;
     private String skin = "SKF_";
 
@@ -62,11 +63,9 @@ public class View {
         scene = new Scene(terrain, 630, 630);
 
 
-        imgFantopac = new ImageView(new Image("img2/fantopac"+1+".png"));
-        imgFantopac.setFitHeight(sizeElem);
-        imgFantopac.setFitWidth(sizeElem);
-        terrain.getChildren().add(imgFantopac);
+        initFantopac();
     }
+
 
     public Scene getScene() {
         return scene;
@@ -86,16 +85,6 @@ public class View {
         nodePerso[indexPerso].setImage(imagePerso);
 
         nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
-    }
-
-    /*South=1 East=2 North=3 West=4*/
-    public void actualisePositionImageFantopac(int direction){
-        Fantopac fantopac = model.getFantopac();
-
-        /*Autre skin : trump  gostBlack  ghost_   pacfant_Vert_  pacfant_Rouge_  fantopac*/
-        imgFantopac.setImage( new Image("img2/pacfant_Vert_"+direction+".png"));
-
-        imgFantopac.relocate(fantopac.getPosX(),fantopac.getPosY());
     }
 
     public void insereElement(ImageView image, int x, int y) {
@@ -250,17 +239,48 @@ public class View {
                 }
             }
         });
-
     }
 
-//    public void afficheFantopac() {
-//
-//        Platform.runLater(new Runnable() {
-//            public void run() {
-//                Fantopac fantopac = model.getFantopac();
-//                int changementFantopac = fantopac.actualisePosition(model.getPlateau(), controller.getGoNorth()[nbJoueur], controller.getGoEast()[nbJoueur], controller.getGoSouth()[nbJoueur], controller.getGoWest()[nbJoueur]);
-//                if (changementFantopac != 0) controller.getView().actualisePositionImageFantopac(changementFantopac);
-//            }
-//        });
-//    }
+    /**Méthode pour la gestion de l'affichage du Fantopac**/
+    private void initFantopac() {
+        imgFantopac = new ImageView(new Image("img2/fantopac"+1+".png"));
+        imgFantopac.setFitHeight(sizeElem);
+        imgFantopac.setFitWidth(sizeElem);
+        terrain.getChildren().add(imgFantopac);
+    }
+
+    /*South=1 East=2 North=3 West=4*/
+    public void actualisePositionImageFantopac(int direction){
+        Fantopac fantopac = model.getFantopac();
+
+        /*Autre skin : trump  gostBlack  ghost_   pacfant_Vert_  pacfant_Rouge_  fantopac*/
+        imgFantopac.setImage( new Image("img2/"+fantopac.getCouleur()+direction+".png"));
+
+        imgFantopac.relocate(fantopac.getPosX(),fantopac.getPosY());
+    }
+
+
+    /** Méthode pour la gestion de l'affichage des fantomes lors d'une partie "2" --> pacman**/
+
+    public void initFantome(Fantome[] tabFamtome){
+        int nbsFantome = tabFamtome.length;
+        imagesFantome = new ImageView[nbsFantome];
+
+        for (int i = 0; i < nbsFantome; i++) {
+            imagesFantome[i] =  new ImageView(new Image("img2/pacfant_"+tabFamtome[i].getCouleur()+"_1.png"));
+            imagesFantome[i].setFitHeight(sizeElem);
+            imagesFantome[i].setFitWidth(sizeElem);
+            terrain.getChildren().add(imagesFantome[i]);
+        }
+    }
+
+    /*South=1 East=2 North=3 West=4*/
+    public void actualisePositionImageFantome(int idFantom, int direction){
+        Fantome fantome = model.getTabFantome()[idFantom];
+
+        /*Autre chaine : pacfant_Couleur_direction_.png   couleurs dispo : Rouge Vert*/
+        imagesFantome[idFantom].setImage( new Image("img2/pacfant_"+fantome.getCouleur()+"_"+direction+".png"));
+        imagesFantome[idFantom].relocate(fantome.getPosX(),fantome.getPosY());
+    }
+
 }

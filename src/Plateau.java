@@ -10,7 +10,7 @@ public class Plateau {
                     tabElement[x][y]=new Mur(false,x,y);
                 }else if(x%2==0 && y%2==0){
                     tabElement[x][y]=new Mur(false,x,y);
-                }else if(!(x<=2 && y<=2) && !(x>=18 && y>=18) && (x%2!=0 || y%2!=0) ){
+                }else if(!(x<=8 && y<=2) && !(x>=18 && y>=18) && (x%2!=0 || y%2!=0) ){
                     tabElement[x][y]=new Mur(true,x,y);
                 }
             }

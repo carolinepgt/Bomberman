@@ -9,7 +9,6 @@ public class FantopacThread extends Thread {
     private Model model;
     private int nbJoueur;
     private Controller controller;
-    private Runnable blop;
 
     FantopacThread(Model model, int nbJoueur, Controller controller){
         this.model = model;
@@ -22,7 +21,7 @@ public class FantopacThread extends Thread {
             if(model.getFantopac().posX%30==0 && model.getFantopac().posY%30==0)comportementFantopac();
 
             try {
-                sleep(15);
+                sleep(5);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
@@ -64,6 +63,7 @@ public class FantopacThread extends Thread {
         } else {
             Random loto = new Random();
             int valeur = loto.nextInt(4);
+
             valeur = 1;
             if(valeur==1){
                 controller.setGoNorthI(nbJoueur,true);

@@ -13,6 +13,7 @@ public class Controller {
     private Model model;
     private int nbJoueur;
     private FantopacThread fantopacThread;
+    private FantomeThread fantomeThread;
 
 
     private boolean[] goNorth;
@@ -33,6 +34,7 @@ public class Controller {
         goWest=new boolean[nbJoueur+1];
 
         this.fantopacThread = new FantopacThread(model,nbJoueur,this);
+        this.fantomeThread = new FantomeThread(model,this);
         start();
 
     }
@@ -87,7 +89,6 @@ public class Controller {
         }
     }
 
-
     /*
     Action lorsque l'on relache la touche
      */
@@ -120,17 +121,28 @@ public class Controller {
         }
     }
 
-
     /*
     Gère les déplacements du personnages en fonction des attributs activé par la pression des touches
+    Gère également les IA
      */
     public void actualisePostion() {
+
+        //--- Gestion des IA
+        //Gestion de l'IA
         if(model.nbsJoueurs==1){
             comportementIA();
         }
 
+        //Lancement du thread pour le fantopac
         if(fantopacThread.getState()== Thread.State.NEW)fantopacThread.start();
 
+        //Lancement du thread pour gérer le comportement des fantomes
+        if(fantomeThread.getState()== Thread.State.NEW && model.isPartiePacman())fantomeThread.start();
+
+        //----
+
+
+        //Gestion des mouvements des persos
         for (int i=0; i<model.getTabPerso().length; i++){
             Personnage perso= model.getTabPerso()[i];
             int changement=perso.actualisePosition(model.getPlateau(),goNorth[i], goEast[i], goSouth[i], goWest[i]);
@@ -138,10 +150,20 @@ public class Controller {
             verifieEffet(perso);
         }
 
+        //Gestion du Fantopac
+        if(!model.isPartiePacman()){
+            Fantopac fantopac = model.getFantopac();
+            int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
+            if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
+        }
 
-        Fantopac fantopac = model.getFantopac();
-        int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
-        if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
+        //Gestion des fantomes de la partie pacman
+        if(model.isPartiePacman()){
+            for (Fantome f : model.getTabFantome()) {
+                int changementFantome = f.actualisePosition(model.getPlateau(), f.isGoNorth(), f.isGoEast(), f.isGoSouth(), f.isGoWest());
+                if(changementFantome!=0) view.actualisePositionImageFantome(f.iTabFantom,changementFantome);
+            }
+        }
     }
 
     private void toucheBombe(int i, int typeBombe) {
@@ -195,11 +217,12 @@ public class Controller {
             }
         }
 
-        /**Méthode pour détecter le fantopac**/
-        int posFantopac[] = model.getFantopac().getPosFantopac();
-        System.out.println("Pos Fantopac x:"+posFantopac[0]+" y:"+posFantopac[1]);
-        System.out.println("x:"+x+" y:"+y);
-        if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac(nbJoueur);
+
+        //Méthode pour détecter le fantopac
+        if(!model.isPartiePacman()){
+            int posFantopac[] = model.getFantopac().getPosFantopac();
+            if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac();
+        }
 
 
 
@@ -283,18 +306,47 @@ public class Controller {
     /*
     Inflige un point de degat Fantopac (le tue)
      */
-    private void degatFantopac(int indexPerso) {
+    private void degatFantopac() {
         model.getFantopac().setVie(model.getFantopac().getVie() - 1);
         if (!model.getFantopac().estEnVie()) {
-//            view.supprimeImagePersonnage(indexPerso);
-
             model.setPartiePacman(true);
-            goPartieFantopac();
+            goBomberPac();
+            actualisePostion();
+
         }
     }
 
-    private void goPartieFantopac() {
 
+    /*****************Lancement partie BomberPac****************************/
+    private void goBomberPac() {
+        for (int i = 0; i < 2; i++) {
+
+            for (int x = 0; x < 21; x++) {
+                for (int y = 0; y < 21; y++) {
+                    if(isNotPerso(x,y))suppressionElement(x,y);
+                }
+            }
+
+        }
+
+        Fantome fantomeRouge = new Fantome(180,180,"Rouge",0);
+        Fantome fantomeVert = new Fantome(450,450,"Vert",1);
+        Fantome fantomeVert2 = new Fantome(180,450,"Blanc",2);
+        Fantome fantomeRouge2 = new Fantome(450,180,"Corne",3);
+        Fantome[] tabFantome = {fantomeRouge,fantomeVert,fantomeVert2,fantomeRouge2};
+
+        model.setTabFantome(tabFantome);
+        view.initFantome(model.getTabFantome());
+    }
+
+    private boolean isNotPerso(int x, int y) {
+        for (Personnage p : model.getTabPerso()) {
+            int xP =p.getPosX()/sizeElem; int yP = p.getPosY()/sizeElem;
+            if (x==xP && y==yP) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

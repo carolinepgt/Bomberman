@@ -8,9 +8,7 @@ public class Personnage_IA extends Personnage {
     private int positionTabPerso;
     String blop;
 
-    public Personnage_IA(int posX, int posY){
-        super(posX,posY);
-    }
+    public Personnage_IA(int posX, int posY,String couleur){super(posX,posY,couleur);}
 
     public Personnage_IA(int posX, int posY, String couleur, int nbsJ, int i){
         super(posX,posY,couleur,nbsJ);
