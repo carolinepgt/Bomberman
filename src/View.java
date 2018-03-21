@@ -81,10 +81,19 @@ public class View {
         }
 
         Personnage perso=model.getTabPerso()[indexPerso];
+        int persoX = perso.getPosX();
+        int persoY = perso.getPosY();
+
+        if(persoX<1){
+            persoX =599;
+        } else if(persoX>599){
+            persoX = 1;
+        }
+        perso.setPosX(persoX);
         Image imagePerso = new Image("img2/"+skin + perso.getCouleur() + direction + ".png");
         nodePerso[indexPerso].setImage(imagePerso);
 
-        nodePerso[indexPerso].relocate(perso.getPosX(),perso.getPosY());
+        nodePerso[indexPerso].relocate(persoX,persoY);
     }
 
     public void insereElement(ImageView image, int x, int y) {
@@ -277,6 +286,14 @@ public class View {
     /*South=1 East=2 North=3 West=4*/
     public void actualisePositionImageFantome(int idFantom, int direction){
         Fantome fantome = model.getTabFantome()[idFantom];
+
+
+        if(fantome.posX<1){
+            fantome.posX=570;
+        } else if(fantome.posX>599){
+            fantome.posX=30;
+        }
+
 
         /*Autre chaine : pacfant_Couleur_direction_.png   couleurs dispo : Rouge Vert*/
         imagesFantome[idFantom].setImage( new Image("img2/pacfant_"+fantome.getCouleur()+"_"+direction+".png"));

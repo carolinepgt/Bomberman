@@ -46,72 +46,6 @@ public class Personnage {
 
     }
 
-    public String getCouleur() {
-        return couleur;
-    }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public int getVitesse() {
-        return vitesse;
-    }
-
-    public int getNbBombeRestantes() {
-        return nbBombeRestantes;
-    }
-
-    public void setVitesse(int vitesse) {
-        this.vitesse = vitesse;
-    }
-
-    public void setNbBombeRestantes(int nbBombeRestantes) {
-        this.nbBombeRestantes = nbBombeRestantes;
-    }
-
-    public int getNbSpikeBombe() {
-        return nbSpikeBombe;
-    }
-
-    public void setNbSpikeBombe(int nbSpikeBombe) {
-        this.nbSpikeBombe = nbSpikeBombe;
-    }
-
-    public int getPortee() {
-        return portee;
-    }
-
-    public void setPortee(int portee) {
-        this.portee = portee;
-    }
-
-    public int getVie() {
-        return vie;
-    }
-
-    public void setVie(int vie) {
-        this.vie = vie;
-    }
-
-    public boolean getHaveMine() {
-        return haveMine;
-    }
-
-    public void setHaveMine(boolean haveMine) {
-        this.haveMine = haveMine;
-    }
-
-    public boolean estEnVie() {
-        if (vie<=0)return false;
-        return true;
-    }
-
-
     public int actualisePosition(Plateau plateau, boolean north, boolean east, boolean south, boolean west) {
 
         Element[][] elements=plateau.getTabElement();
@@ -193,12 +127,84 @@ public class Personnage {
         return null;
     }
 
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getVitesse() {
+        return vitesse;
+    }
+
+    public int getNbBombeRestantes() {
+        return nbBombeRestantes;
+    }
+
+    public void setVitesse(int vitesse) {
+        this.vitesse = vitesse;
+    }
+
+    public void setNbBombeRestantes(int nbBombeRestantes) {
+        this.nbBombeRestantes = nbBombeRestantes;
+    }
+
+    public int getNbSpikeBombe() {
+        return nbSpikeBombe;
+    }
+
+    public void setNbSpikeBombe(int nbSpikeBombe) {
+        this.nbSpikeBombe = nbSpikeBombe;
+    }
+
+    public int getPortee() {
+        return portee;
+    }
+
+    public void setPortee(int portee) {
+        this.portee = portee;
+    }
+
+    public int getVie() {
+        return vie;
+    }
+
+    public void setVie(int vie) {
+        this.vie = vie;
+    }
+
+    public boolean getHaveMine() {
+        return haveMine;
+    }
+
+    public void setHaveMine(boolean haveMine) {
+        this.haveMine = haveMine;
+    }
+
+    public boolean estEnVie() {
+        if (vie<=0)return false;
+        return true;
+    }
+
     public void setPosX(String posX) { //-
         this.posX = Integer.parseInt(posX);
+    }
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 
     public void setPosY(String posY) { //-
         this.posY = Integer.parseInt(posY);
+    }
+    public void setPosY(int  posY) {
+        this.posY = posY;
     }
 
     public int getNj() { //-

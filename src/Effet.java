@@ -11,6 +11,9 @@ public class Effet extends Element {
     4 : Bonus vitesse;
     5 : Bonus penetrator;
 
+    Bonus partie Pacman
+    6 : Bonus killFant --> pour tuer les fantomes
+
      */
 
     public Effet(int posX, int posY) {

@@ -328,6 +328,14 @@ public class Controller {
             }
 
         }
+        model.getPlateau().getTabElement()[0][9] = null;
+        model.getPlateau().getTabElement()[0][11] = null;
+        model.getPlateau().getTabElement()[20][9] = null;
+        model.getPlateau().getTabElement()[20][11] = null;
+        view.supprimeImageView(0,9);
+        view.supprimeImageView(0,11);
+        view.supprimeImageView(20,9);
+        view.supprimeImageView(20,11);
 
         Fantome fantomeRouge = new Fantome(150,150,"Rouge",0);
         Fantome fantomeVert = new Fantome(450,450,"Vert",1);
@@ -337,6 +345,8 @@ public class Controller {
 
         model.setTabFantome(tabFantome);
         view.initFantome(model.getTabFantome());
+
+//        Effet killFant = new Effet();
     }
 
     private boolean isNotPerso(int x, int y) {
@@ -345,6 +355,12 @@ public class Controller {
             if (x==xP && y==yP) {
                 return false;
             }
+        }
+        if(model.nbsJoueurs==1){
+            int xIA = model.getTabPerso()[model.nbsJoueurs].getPosX();
+            int yIA = model.getTabPerso()[model.nbsJoueurs].getPosY();
+            System.out.println("On supprime l'IA");
+            return !(xIA==x && yIA==y);
         }
         return true;
     }
