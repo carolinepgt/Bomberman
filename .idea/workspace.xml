@@ -8,12 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="465b3e9e-ec14-4186-acd5-fc77f45d6e14" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/Controller.java" afterPath="$PROJECT_DIR$/src/Controller.java" />
-      <change beforePath="$PROJECT_DIR$/src/Effet.java" afterPath="$PROJECT_DIR$/src/Effet.java" />
-      <change beforePath="$PROJECT_DIR$/src/Fantome.java" afterPath="$PROJECT_DIR$/src/Fantome.java" />
-      <change beforePath="$PROJECT_DIR$/src/Model.java" afterPath="$PROJECT_DIR$/src/Model.java" />
-      <change beforePath="$PROJECT_DIR$/src/Personnage.java" afterPath="$PROJECT_DIR$/src/Personnage.java" />
-      <change beforePath="$PROJECT_DIR$/src/View.java" afterPath="$PROJECT_DIR$/src/View.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -515,7 +509,7 @@
       <workItem from="1521533912718" duration="5892000" />
       <workItem from="1521552052503" duration="6562000" />
       <workItem from="1521624060193" duration="4845000" />
-      <workItem from="1521635062597" duration="4442000" />
+      <workItem from="1521635062597" duration="4588000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout du lancement de la partie Pacman &#10;+ IA des fantome &#10;+ Différents skin pour le Fantopac &#10;+ Différents skin pour les Fantomes&#10;+ Modification élémentaire de la map au lancement de la partie Pacman">
       <created>1521568223919</created>
@@ -531,11 +525,18 @@
       <option name="project" value="LOCAL" />
       <updated>1521624722424</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ajout d'une possibilité des joueurs ET fantomes de passer d'un bord à l'autre de la map.">
+      <created>1521643250625</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1521643250625</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68385000" />
+    <option name="totallyTimeSpent" value="68531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -617,7 +618,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajout du lancement de la partie Pacman &#10;+ IA des fantome &#10;+ Différents skin pour le Fantopac &#10;+ Différents skin pour les Fantomes&#10;+ Modification élémentaire de la map au lancement de la partie Pacman" />
     <MESSAGE value="Correction de l'emplacement des fatomes au lancement de la partie." />
-    <option name="LAST_COMMIT_MESSAGE" value="Correction de l'emplacement des fatomes au lancement de la partie." />
+    <MESSAGE value="Ajout d'une possibilité des joueurs ET fantomes de passer d'un bord à l'autre de la map." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout d'une possibilité des joueurs ET fantomes de passer d'un bord à l'autre de la map." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
