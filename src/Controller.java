@@ -329,10 +329,10 @@ public class Controller {
 
         }
 
-        Fantome fantomeRouge = new Fantome(180,180,"Rouge",0);
+        Fantome fantomeRouge = new Fantome(150,150,"Rouge",0);
         Fantome fantomeVert = new Fantome(450,450,"Vert",1);
-        Fantome fantomeVert2 = new Fantome(180,450,"Blanc",2);
-        Fantome fantomeRouge2 = new Fantome(450,180,"Corne",3);
+        Fantome fantomeVert2 = new Fantome(150,450,"Blanc",2);
+        Fantome fantomeRouge2 = new Fantome(450,150,"Corne",3);
         Fantome[] tabFantome = {fantomeRouge,fantomeVert,fantomeVert2,fantomeRouge2};
 
         model.setTabFantome(tabFantome);

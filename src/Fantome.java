@@ -19,6 +19,7 @@ public class Fantome extends Personnage_IA {
         this.iTabFantom=iTabFantom;
         chemin = new ArrayList<>();
         cptTour=0;
+        vitesse = 1;
     }
 
     public int actualisePosition(Plateau plateau, boolean north, boolean east, boolean south, boolean west) {
