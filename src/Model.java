@@ -15,7 +15,7 @@ public class Model {
         this.nbsJoueurs = nbJoueurs;
         if(nbJoueurs==1){
             tabPerso=new Personnage[nbJoueurs+1];
-            tabPerso[1]= new Personnage_IA(570,570,"Orange",0,1);
+            tabPerso[1]= new Personnage_IA(570,570,"Bleu",0,1);
 //            tabPerso[1]=new Personnage(60,570, "Orange", 3);
         } else {
             tabPerso=new Personnage[nbJoueurs];

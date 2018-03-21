@@ -146,7 +146,10 @@ public class Controller {
         for (int i=0; i<model.getTabPerso().length; i++){
             Personnage perso= model.getTabPerso()[i];
             int changement=perso.actualisePosition(model.getPlateau(),goNorth[i], goEast[i], goSouth[i], goWest[i]);
-            if (changement!=0)view.actualisePositionImage(changement, i);
+            if (changement!=0){
+                perso.setNumAnime(perso.getNumAnime()+1);
+                view.actualisePositionImage(changement, i);
+            }
             verifieEffet(perso);
         }
 
@@ -319,6 +322,7 @@ public class Controller {
 
     /*****************Lancement partie BomberPac****************************/
     private void goBomberPac() {
+        //Adaptation du plateau
         for (int i = 0; i < 2; i++) {
 
             for (int x = 0; x < 21; x++) {
@@ -337,6 +341,7 @@ public class Controller {
         view.supprimeImageView(20,9);
         view.supprimeImageView(20,11);
 
+        //Création des fantomes et initialisation
         Fantome fantomeRouge = new Fantome(150,150,"Rouge",0);
         Fantome fantomeVert = new Fantome(450,450,"Vert",1);
         Fantome fantomeVert2 = new Fantome(150,450,"Blanc",2);
@@ -345,6 +350,10 @@ public class Controller {
 
         model.setTabFantome(tabFantome);
         view.initFantome(model.getTabFantome());
+
+        for (Personnage p :model.getTabPerso()) {
+            p.setNumAnime(1);
+        }
 
 //        Effet killFant = new Effet();
     }
@@ -359,7 +368,6 @@ public class Controller {
         if(model.nbsJoueurs==1){
             int xIA = model.getTabPerso()[model.nbsJoueurs].getPosX();
             int yIA = model.getTabPerso()[model.nbsJoueurs].getPosY();
-            System.out.println("On supprime l'IA");
             return !(xIA==x && yIA==y);
         }
         return true;

@@ -4,9 +4,10 @@
 public class Personnage_IA extends Personnage {
     private boolean bombePoser=false;
     private int direction;
-    boolean passer=false;
+    private boolean passer=false;
     private int positionTabPerso;
-    String blop;
+    private String blop;
+
 
     public Personnage_IA(int posX, int posY,String couleur){super(posX,posY,couleur);}
 

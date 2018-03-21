@@ -13,6 +13,8 @@ public class Personnage {
     private int nbSpikeBombe;
     private String couleur;
     private int changement;
+    private int numAnime; //String qui stock le numéro (1,2 ou 3) de l'image du pacman
+
 
     public Personnage(int posX, int posY,String couleur) {
         this.posX = posX;
@@ -221,5 +223,12 @@ public class Personnage {
         return changement;
     }
 
+    public int getNumAnime() {
+        return numAnime;
+    }
 
+    public void setNumAnime(int numAnime) {
+        if(numAnime==4) this.numAnime = 1;
+        else this.numAnime = numAnime;
+    }
 }

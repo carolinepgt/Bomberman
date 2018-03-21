@@ -73,14 +73,21 @@ public class View {
 
     /*South=1 East=2 North=3 West=4*/
     public void actualisePositionImage(int direction, int indexPerso){
+        Personnage perso=model.getTabPerso()[indexPerso];
+
+        String numAnime;
         if(!model.isPartiePacman()){
             skin = "SKF_";
+            numAnime = "";
         } else {
             terrain.getChildren().remove(imgFantopac);
             skin = "pacman_";
+            numAnime = "_"+perso.getNumAnime();
+
+            nodePerso[indexPerso].setFitWidth(sizeElem);
+            nodePerso[indexPerso].setFitHeight(sizeElem);
         }
 
-        Personnage perso=model.getTabPerso()[indexPerso];
         int persoX = perso.getPosX();
         int persoY = perso.getPosY();
 
@@ -90,9 +97,11 @@ public class View {
             persoX = 1;
         }
         perso.setPosX(persoX);
-        Image imagePerso = new Image("img2/"+skin + perso.getCouleur() + direction + ".png");
-        nodePerso[indexPerso].setImage(imagePerso);
+        System.out.println("URL : "+"img2/"+skin + perso.getCouleur() + direction + numAnime+".png");
+        Image imagePerso = new Image("img2/"+skin + perso.getCouleur() + direction + numAnime+".png");
 
+
+        nodePerso[indexPerso].setImage(imagePerso);
         nodePerso[indexPerso].relocate(persoX,persoY);
     }
 
@@ -293,7 +302,6 @@ public class View {
         } else if(fantome.posX>599){
             fantome.posX=30;
         }
-
 
         /*Autre chaine : pacfant_Couleur_direction_.png   couleurs dispo : Rouge Vert*/
         imagesFantome[idFantom].setImage( new Image("img2/pacfant_"+fantome.getCouleur()+"_"+direction+".png"));
