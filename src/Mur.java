@@ -21,6 +21,11 @@ public class Mur extends Element {
         Destructible = destructible;
     }
 
+    public Mur(boolean destructible, int posX, int posY, String url) {
+        super(url, posX, posY);
+        Destructible = destructible;
+    }
+
     public boolean isDestructible() {
         return Destructible;
     }

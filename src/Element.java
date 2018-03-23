@@ -40,5 +40,4 @@ public class Element {
     public boolean isBombe(){
         return false;
     }
-
 }

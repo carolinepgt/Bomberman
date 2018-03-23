@@ -26,6 +26,7 @@ public class View {
     private ImageView[][] tabImageView;
     private ImageView imgFantopac;
     private ImageView[] imagesFantome;
+    private ImageView[][] imagesSol;
     private Group terrain, sousMenu;
     private Model model;
     private int sizeElem = 30;
@@ -41,6 +42,7 @@ public class View {
         terrain = new Group();
 
         tabImageView=new ImageView[21][21];
+        imagesSol = new ImageView[21][21];
         for (int x=0; x<21; x++){
             for (int y=0; y<21; y++){
                 Element element=model.getPlateau().getTabElement()[x][y];
@@ -50,6 +52,7 @@ public class View {
                     tabImageView[x][y].relocate(x*sizeElem,y*sizeElem);
                     terrain.getChildren().add(tabImageView[x][y]);
                 }
+                inserSol(x,y);
             }
         }
 
@@ -97,7 +100,6 @@ public class View {
             persoX = 1;
         }
         perso.setPosX(persoX);
-        System.out.println("URL : "+"img2/"+skin + perso.getCouleur() + direction + numAnime+".png");
         Image imagePerso = new Image("img2/"+skin + perso.getCouleur() + direction + numAnime+".png");
 
 
@@ -308,4 +310,35 @@ public class View {
         imagesFantome[idFantom].relocate(fantome.getPosX(),fantome.getPosY());
     }
 
+    public void actualiseAllImage(){
+        for (int x=0; x<21; x++){
+            for (int y=0; y<21; y++){
+                Element element = model.getPlateau().getTabElement()[x][y];
+                if (element!=null){
+                    Image img = new Image(element.getImageURL());
+                    tabImageView[x][y].setImage(img);
+                    tabImageView[x][y].setFitHeight(sizeElem);
+                    tabImageView[x][y].setFitWidth(sizeElem);
+                }
+            }
+        }
+    }
+
+    public void inserSol(int x, int y) {
+        Image img = new Image("img2/solPacman.png");
+        ImageView imageView = new ImageView(img);
+
+        imageView.setFitHeight(sizeElem);
+        imageView.setFitWidth(sizeElem);
+
+        imageView.relocate(x*sizeElem,y*sizeElem);
+        terrain.getChildren().add(imageView);
+        imageView.setVisible(false);
+
+        imagesSol[x][y] = imageView;
+    }
+
+    public void reveleSol(int x, int y){
+        imagesSol[x][y].setVisible(true);
+    }
 }

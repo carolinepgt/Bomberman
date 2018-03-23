@@ -11,6 +11,7 @@ public class Fantome extends Personnage_IA {
     private boolean goEast;
     private boolean goWest;
     private int cptTour;
+    private boolean attaque;
 
     private ArrayList<Integer> chemin;
 
@@ -20,6 +21,7 @@ public class Fantome extends Personnage_IA {
         chemin = new ArrayList<>();
         cptTour=0;
         vitesse = 2;
+        attaque = true;
     }
 
     public int actualisePosition(Plateau plateau, boolean north, boolean east, boolean south, boolean west) {
@@ -114,5 +116,9 @@ public class Fantome extends Personnage_IA {
 
     public void setiTabFantom(int iTabFantom) {
         this.iTabFantom = iTabFantom;
+    }
+
+    public boolean isAttaque() {
+        return attaque;
     }
 }

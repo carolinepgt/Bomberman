@@ -322,16 +322,6 @@ public class Controller {
 
     /*****************Lancement partie BomberPac****************************/
     private void goBomberPac() {
-        //Adaptation du plateau
-        for (int i = 0; i < 2; i++) {
-
-            for (int x = 0; x < 21; x++) {
-                for (int y = 0; y < 21; y++) {
-                    if(isNotPerso(x,y))suppressionElement(x,y);
-                }
-            }
-
-        }
         model.getPlateau().getTabElement()[0][9] = null;
         model.getPlateau().getTabElement()[0][11] = null;
         model.getPlateau().getTabElement()[20][9] = null;
@@ -340,6 +330,23 @@ public class Controller {
         view.supprimeImageView(0,11);
         view.supprimeImageView(20,9);
         view.supprimeImageView(20,11);
+
+        //Adaptation du plateau
+        for (int i = 0; i < 2; i++) {
+
+            for (int x = 0; x < 21; x++) {
+                for (int y = 0; y < 21; y++) {
+                    if(isNotPerso(x,y))suppressionElement(x,y);
+
+                    if(model.getPlateau().getTabElement()[x][y] instanceof Mur){
+                        model.getPlateau().getTabElement()[x][y].setImageURL("img2/MurPacman.png");
+                    } else {
+                        view.reveleSol(x,y);
+                    }
+                }
+            }
+        }
+
 
         //Création des fantomes et initialisation
         Fantome fantomeRouge = new Fantome(150,150,"Rouge",0);
@@ -351,9 +358,12 @@ public class Controller {
         model.setTabFantome(tabFantome);
         view.initFantome(model.getTabFantome());
 
+
         for (Personnage p :model.getTabPerso()) {
             p.setNumAnime(1);
         }
+        view.actualiseAllImage();
+
 
 //        Effet killFant = new Effet();
     }
