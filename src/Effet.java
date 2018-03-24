@@ -34,7 +34,7 @@ public class Effet extends Element {
         modifieUrl();
     }
 
-    public void modifieUrl(){ //-
+    public void modifieUrl(){
         String url="";
         switch (typeEffet) {
             case 1: url="img2/portee30_30.png"; break;
@@ -42,6 +42,7 @@ public class Effet extends Element {
             case 3: url="img2/vie30_30.png"; break;
             case 4: url="img2/sonic30_30.png"; break;
             case 5: url="img2/penetrator30_30.png"; break;
+            case 6: url="img2/seringueR.png"; break;
         }
         super.setImageURL(url);
     }
@@ -53,10 +54,10 @@ public class Effet extends Element {
             case 3: if (perso.getVie()<3) perso.setVie(perso.getVie()+1); break;
             case 4: if (perso.getVitesse()<4) perso.setVitesse(perso.getVitesse()+1); break;
             case 5: perso.setNbSpikeBombe(perso.getNbSpikeBombe()+1); break;
+            case 6: perso.setVie(2); break;
         }
     }
 
-    @Override //-
     public String toString() {
         return ""+typeEffet;
     }

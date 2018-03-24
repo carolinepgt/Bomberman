@@ -30,7 +30,6 @@ public class Mur extends Element {
         return Destructible;
     }
 
-    @Override //-
     public String toString() {
         if (!Destructible) return "MI";
         if (effet==null) return "M0";

@@ -130,6 +130,48 @@ public class Personnage {
     }
 
 
+    public void setNumAnime(int numAnime) {
+        if(numAnime==4) this.numAnime = 1;
+        else this.numAnime = numAnime;
+    }
+
+    public boolean estEnVie() {
+        if (vie<=0)return false;
+        return true;
+    }
+
+    public void setChangement(String changement) {
+        if (!changement.equals("0")){
+            this.changement = Integer.parseInt(changement);
+        }
+    }
+
+    public int getChangement() {
+        return changement;
+    }
+
+    public int getNumAnime() {
+        return numAnime;
+    }
+
+    public void setPosX(String posX) { //-
+        this.posX = Integer.parseInt(posX);
+    }
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(String posY) { //-
+        this.posY = Integer.parseInt(posY);
+    }
+    public void setPosY(int  posY) {
+        this.posY = posY;
+    }
+
+    public int getNj() { //-
+        return nj;
+    }
+
     public String getCouleur() {
         return couleur;
     }
@@ -188,47 +230,5 @@ public class Personnage {
 
     public void setHaveMine(boolean haveMine) {
         this.haveMine = haveMine;
-    }
-
-    public boolean estEnVie() {
-        if (vie<=0)return false;
-        return true;
-    }
-
-    public void setPosX(String posX) { //-
-        this.posX = Integer.parseInt(posX);
-    }
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public void setPosY(String posY) { //-
-        this.posY = Integer.parseInt(posY);
-    }
-    public void setPosY(int  posY) {
-        this.posY = posY;
-    }
-
-    public int getNj() { //-
-        return nj;
-    }
-
-    public void setChangement(String changement) {
-        if (!changement.equals("0")){
-            this.changement = Integer.parseInt(changement);
-        }
-    }
-
-    public int getChangement() {
-        return changement;
-    }
-
-    public int getNumAnime() {
-        return numAnime;
-    }
-
-    public void setNumAnime(int numAnime) {
-        if(numAnime==4) this.numAnime = 1;
-        else this.numAnime = numAnime;
     }
 }

@@ -29,7 +29,7 @@ public class Plateau {
         return tabElement;
     }
 
-
-
-
+    public void setTabElement(Element e, int x,int y) {
+        this.tabElement[x][y]=e;
+    }
 }

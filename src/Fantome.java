@@ -20,7 +20,7 @@ public class Fantome extends Personnage_IA {
         this.iTabFantom=iTabFantom;
         chemin = new ArrayList<>();
         cptTour=0;
-        vitesse = 2;
+        vitesse = 1;
         attaque = true;
     }
 

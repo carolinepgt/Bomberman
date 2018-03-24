@@ -1,21 +1,15 @@
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -27,7 +21,8 @@ public class View {
     private ImageView imgFantopac;
     private ImageView[] imagesFantome;
     private ImageView[][] imagesSol;
-    private Group terrain, sousMenu;
+
+    private Group terrain;
     private Model model;
     private int sizeElem = 30;
     private String skin = "SKF_";
@@ -107,10 +102,16 @@ public class View {
         nodePerso[indexPerso].relocate(persoX,persoY);
     }
 
-    public void insereElement(ImageView image, int x, int y) {
+    public void insereElementToBack(ImageView image, int x, int y) {
         tabImageView[x][y]=image;
         terrain.getChildren().add(image);
         image.toBack();
+    }
+
+    public void insereElementToFront(ImageView image, int x, int y) {
+        tabImageView[x][y]=image;
+        terrain.getChildren().add(image);
+        image.toFront();
     }
 
     public void supprimeImageView(int posX, int posY) {
@@ -319,6 +320,7 @@ public class View {
                     tabImageView[x][y].setImage(img);
                     tabImageView[x][y].setFitHeight(sizeElem);
                     tabImageView[x][y].setFitWidth(sizeElem);
+                    tabImageView[x][y].relocate(x*sizeElem,y*sizeElem);
                 }
             }
         }
@@ -336,6 +338,7 @@ public class View {
         imageView.setVisible(false);
 
         imagesSol[x][y] = imageView;
+        imagesSol[x][y].toBack();
     }
 
     public void reveleSol(int x, int y){

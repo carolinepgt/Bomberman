@@ -4,10 +4,9 @@ public class Model {
     private Personnage[] tabPerso;
     private Fantome[] tabFantome;
     private Fantopac fantopac;
-    private Effet[] tabBonusPacman;
+    private boolean partiePacman;
     private Plateau plateau;
     int nbsJoueurs;
-    private boolean partiePacman;
 
 
 
@@ -44,21 +43,12 @@ public class Model {
     }
 
 
-
     public boolean partieFini(){
         int nbJoueurEnVie=0;
         for (Personnage perso : tabPerso){
             if (perso.estEnVie())nbJoueurEnVie++;
         }
         return nbJoueurEnVie <= 1;
-    }
-
-    public Effet[] getTabBonusPacman() {
-        return tabBonusPacman;
-    }
-
-    public void setTabBonusPacman(Effet[] tabBonusPacman) {
-        this.tabBonusPacman = tabBonusPacman;
     }
 
     public Fantopac getFantopac() {
@@ -80,4 +70,5 @@ public class Model {
     public void setTabFantome(Fantome[] tabFantom) {
         this.tabFantome = tabFantom;
     }
+
 }

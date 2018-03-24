@@ -57,7 +57,6 @@ public class FantomeThread extends Thread {
 
 
         if(fantome.isAttaque()){
-            System.out.println("isNotFantome : "+isNotFantome(xF,yF+1));
             //go South
             if(plateau[xF][yF+1]==null && distance_SOUTH_p<distanceF_P && isNotFantome(xF,yF+1))fantome.setGoSouth(true);
 
@@ -75,16 +74,16 @@ public class FantomeThread extends Thread {
         } else {
 
             //go South
-            if(plateau[xF][yF+1]==null && distance_SOUTH_p>distanceF_P)fantome.setGoSouth(true);
+            if((plateau[xF][yF+1]==null || plateau[xF][yF+1].getClass()==Effet.class) && distance_SOUTH_p>distanceF_P)fantome.setGoSouth(true);
 
                 //go East
-            else if(plateau[xF+1][yF]==null && distance_EAST_p>distanceF_P)fantome.setGoEast(true);
+            else if((plateau[xF+1][yF]==null || plateau[xF+1][yF].getClass()==Effet.class) && distance_EAST_p>distanceF_P)fantome.setGoEast(true);
 
                 // go north
-            else if(plateau[xF][yF-1]==null && distance_NORTH_p>distanceF_P)fantome.setGoNorth(true);
+            else if((plateau[xF][yF-1]==null || plateau[xF][yF-1].getClass()==Effet.class) && distance_NORTH_p>distanceF_P)fantome.setGoNorth(true);
 
                 // go West
-            else if(plateau[xF-1][yF]==null && distance_WEST_p>distanceF_P)fantome.setGoWest(true);
+            else if((plateau[xF-1][yF]==null || plateau[xF-1][yF].getClass()==Effet.class) && distance_WEST_p>distanceF_P)fantome.setGoWest(true);
 
                 // go autre direction libre
             else testDirection(fantome);
@@ -92,9 +91,7 @@ public class FantomeThread extends Thread {
     }
 
     private boolean isNotFantome(int xF, int yF) {
-        System.out.println("pos transmse du fantome : "+xF + " "+ yF+"\n");
         for (Fantome f : model.getTabFantome()) {
-            System.out.println("fantome pos : "+f.getPosX()/30 +" "+f.getPosY()/30);
             if(f.getPosX()/30==xF && f.getPosY()/30==yF)return false;
         }
         return true;
@@ -110,17 +107,43 @@ public class FantomeThread extends Thread {
 
         Element[][] plateau = model.getPlateau().getTabElement();
 
-        if(plateau[x_Fantome][y_fantome-1]==null) fantome.setGoNorth(true);
-        else if(plateau[x_Fantome-1][y_fantome]==null) fantome.setGoWest(true);
-        else if(plateau[x_Fantome][y_fantome+1]==null) fantome.setGoSouth(true);
-        else if(plateau[x_Fantome+1][y_fantome]==null) fantome.setGoEast(true);
-        else fantome.initDirectionFantome();
+        Random random = new Random();
+        boolean ok=false;
+        int choix;
+
+        while (!ok){
+            choix = random.nextInt(3);
+            switch (choix){
+                case 0 :
+                    if(plateau[x_Fantome][y_fantome-1]==null || plateau[x_Fantome][y_fantome-1].getClass()==Effet.class){
+                        fantome.setGoNorth(true);
+                        ok=true;
+                        break;
+                    }
+                case 1 :
+                    if(plateau[x_Fantome-1][y_fantome]==null || plateau[x_Fantome-1][y_fantome].getClass()==Effet.class) {
+                        fantome.setGoWest(true);
+                        ok=true;
+                        break;
+                    }
+                case 2 :
+                    if(plateau[x_Fantome][y_fantome+1]==null || plateau[x_Fantome][y_fantome+1].getClass()==Effet.class) {
+                        fantome.setGoSouth(true);
+                        ok=true;
+                        break;
+                    }
+                case 3 :
+                    if(plateau[x_Fantome+1][y_fantome]==null || plateau[x_Fantome+1][y_fantome].getClass()==Effet.class) {
+                        fantome.setGoEast(true);
+                        ok = true;
+                        break;
+                    }
+            }
+        }
     }
 
     /**
-     * !!! N'EST FINALMENT PAS UTILIS2 MAIS PEUT ETRE UTILE PLUS TARD
      * Méthode qui calcul les distances entre le "fantome" et les perso et renvoie l'id du plus proche
-     *
      * **/
     private int getEnnemiProche(Fantome fantome) {
         Personnage[] tabPerso = model.getTabPerso();

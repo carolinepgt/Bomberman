@@ -258,7 +258,7 @@ public class ControllerReseau {
         if (bombe!=null ) {
             ImageView iVBombe = new ImageView(new Image(bombe.getImageURL()));
             iVBombe.relocate(bombe.getPosX() * sizeElem, bombe.getPosY() * sizeElem);
-            view.insereElement(iVBombe, bombe.getPosX(), bombe.getPosY());
+            view.insereElementToBack(iVBombe, bombe.getPosX(), bombe.getPosY());
 
             ScaleTransition scaleAnimation = new ScaleTransition(Duration.seconds(2), iVBombe);
             scaleAnimation.setFromX(0.7);
@@ -318,7 +318,7 @@ public class ControllerReseau {
             model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = element.getEffet();
             ImageView imageEffet = new ImageView(new Image(element.getEffet().getImageURL()));
             imageEffet.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
-            view.insereElement(imageEffet, element.getPosX(), element.getPosY());
+            view.insereElementToBack(imageEffet, element.getPosX(), element.getPosY());
         }
     }
 

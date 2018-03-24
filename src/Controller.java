@@ -2,7 +2,6 @@ import javafx.animation.ScaleTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -174,7 +173,7 @@ public class Controller {
         if (bombe!=null ) {
             ImageView iVBombe = new ImageView(new Image(bombe.getImageURL()));
             iVBombe.relocate(bombe.getPosX() * sizeElem, bombe.getPosY() * sizeElem);
-            view.insereElement(iVBombe, bombe.getPosX(), bombe.getPosY());
+            view.insereElementToBack(iVBombe, bombe.getPosX(), bombe.getPosY());
 
 
             ScaleTransition scaleAnimation = new ScaleTransition(Duration.seconds(2), iVBombe);
@@ -241,7 +240,7 @@ public class Controller {
             model.getPlateau().getTabElement()[element.getPosX()][element.getPosY()] = effet;
             ImageView imageEffet = new ImageView(new Image(effet.getImageURL()));
             imageEffet.relocate(element.getPosX() * sizeElem, element.getPosY() * sizeElem);
-            view.insereElement(imageEffet, element.getPosX(), element.getPosY());
+            view.insereElementToBack(imageEffet, element.getPosX(), element.getPosY());
         }
     }
 
@@ -322,6 +321,7 @@ public class Controller {
 
     /*****************Lancement partie BomberPac****************************/
     private void goBomberPac() {
+        //Adaptation des murs incassables
         model.getPlateau().getTabElement()[0][9] = null;
         model.getPlateau().getTabElement()[0][11] = null;
         model.getPlateau().getTabElement()[20][9] = null;
@@ -331,7 +331,7 @@ public class Controller {
         view.supprimeImageView(20,9);
         view.supprimeImageView(20,11);
 
-        //Adaptation du plateau
+        //Adaptation du plateau ( suppreesion des mur cassable + retapissage du sol :D)
         for (int i = 0; i < 2; i++) {
 
             for (int x = 0; x < 21; x++) {
@@ -359,14 +359,21 @@ public class Controller {
         view.initFantome(model.getTabFantome());
 
 
+        //Création des bonus killFant et initialisation
+        genereKillFant(5);
+
+
+        //Mise à zéro de l'animation des pacman
         for (Personnage p :model.getTabPerso()) {
             p.setNumAnime(1);
         }
+
+
+        //Actualisation des toutes les images
         view.actualiseAllImage();
-
-
-//        Effet killFant = new Effet();
     }
+
+
 
     private boolean isNotPerso(int x, int y) {
         for (Personnage p : model.getTabPerso()) {
@@ -383,6 +390,22 @@ public class Controller {
         return true;
     }
 
+    private void genereKillFant(int nbsBonus) {
+        Random random=new Random();
+        for (int i = 0; i < nbsBonus; i++) {
+            int x = random.nextInt(20);
+            int y = random.nextInt(20);
+
+            if(model.getPlateau().getTabElement()[x][y]==null && isNotPerso(x,y)){
+                Effet killFant = new Effet(6,x,y);
+                model.getPlateau().setTabElement(killFant,x,y);
+
+                view.insereElementToFront(new ImageView(),x,y);
+            } else {
+                i--;
+            }
+        }
+    }
 
     /******************** Methode IA ******************************************************/
     private void initDirectionIA(int i) {
