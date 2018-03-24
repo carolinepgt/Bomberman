@@ -61,7 +61,7 @@ public class View {
         scene = new Scene(terrain, 630, 630);
 
 
-        initFantopac();
+        if(model.nbsJoueurs!=1)initFantopac();
     }
 
 
@@ -264,7 +264,7 @@ public class View {
 
     /**Méthode pour la gestion de l'affichage du Fantopac**/
     private void initFantopac() {
-        imgFantopac = new ImageView(new Image("img2/fantopac"+1+".png"));
+        imgFantopac = new ImageView(new Image("img2/trump"+1+".png"));
         imgFantopac.setFitHeight(sizeElem);
         imgFantopac.setFitWidth(sizeElem);
         terrain.getChildren().add(imgFantopac);
@@ -282,7 +282,6 @@ public class View {
 
 
     /** Méthode pour la gestion de l'affichage des fantomes lors d'une partie "2" --> pacman**/
-
     public void initFantome(Fantome[] tabFamtome){
         int nbsFantome = tabFamtome.length;
         imagesFantome = new ImageView[nbsFantome];

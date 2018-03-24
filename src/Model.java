@@ -15,21 +15,20 @@ public class Model {
         if(nbJoueurs==1){
             tabPerso=new Personnage[nbJoueurs+1];
             tabPerso[1]= new Personnage_IA(570,570,"Bleu",0,1);
-//            tabPerso[1]=new Personnage(60,570, "Orange", 3);
         } else {
             tabPerso=new Personnage[nbJoueurs];
         }
         switch (nbJoueurs){
             case 4:
-                tabPerso[3]=new Personnage(30,570, "Orange", 3);
+                tabPerso[3]=new Personnage(30,570, "Bleu", 3);
             case 3:
-                tabPerso[2]=new Personnage(570,30, "Bleu", 2);
+                tabPerso[2]=new Personnage(570,30, "Orange", 2);
             case 2:
-                tabPerso[1]=new Personnage(570,570, "Orange", 1);
+                tabPerso[1]=new Personnage(570,570, "Bleu", 1);
             case 1:
-                tabPerso[0]=new Personnage(30,30, "Bleu", 0);
+                tabPerso[0]=new Personnage(30,30, "Orange", 0);
         }
-        fantopac = new Fantopac(270,270, "trump");
+        if(nbJoueurs!=1)fantopac = new Fantopac(270,270, "trump");
         partiePacman = false;
         plateau=new Plateau();
     }

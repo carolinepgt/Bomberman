@@ -133,7 +133,7 @@ public class Controller {
         }
 
         //Lancement du thread pour le fantopac
-        if(fantopacThread.getState()== Thread.State.NEW)fantopacThread.start();
+        if(model.nbsJoueurs!=1 && fantopacThread.getState()==Thread.State.NEW)fantopacThread.start();
 
         //Lancement du thread pour gérer le comportement des fantomes
         if(fantomeThread.getState()== Thread.State.NEW && model.isPartiePacman())fantomeThread.start();
@@ -153,10 +153,12 @@ public class Controller {
         }
 
         //Gestion du Fantopac
-        if(!model.isPartiePacman()){
-            Fantopac fantopac = model.getFantopac();
-            int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
-            if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
+        if(model.nbsJoueurs!=1){
+            if(!model.isPartiePacman()){
+                Fantopac fantopac = model.getFantopac();
+                int changementFantopac = fantopac.actualisePosition(model.getPlateau(),goNorth[nbJoueur], goEast[nbJoueur], goSouth[nbJoueur], goWest[nbJoueur]);
+                if (changementFantopac!=0)view.actualisePositionImageFantopac(changementFantopac);
+            }
         }
 
         //Gestion des fantomes de la partie pacman
@@ -221,9 +223,11 @@ public class Controller {
 
 
         //Méthode pour détecter le fantopac
-        if(!model.isPartiePacman()){
-            int posFantopac[] = model.getFantopac().getPosFantopac();
-            if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac();
+        if(model.nbsJoueurs!=1){
+            if(!model.isPartiePacman()){
+                int posFantopac[] = model.getFantopac().getPosFantopac();
+                if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac();
+            }
         }
 
 
