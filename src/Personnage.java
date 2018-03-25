@@ -16,6 +16,7 @@ public class Personnage {
     private int numAnime; //String qui stock le numéro (1,2 ou 3) de l'image du pacman
     private boolean killFantome;
     int score;
+    long tempsInitial;
 
 
     public Personnage(int posX, int posY,String couleur) {
@@ -249,5 +250,13 @@ public class Personnage {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setTempsInitial(long tempsInitial) {
+        this.tempsInitial = tempsInitial;
+    }
+
+    public long getTempsInitial() {
+        return tempsInitial;
     }
 }

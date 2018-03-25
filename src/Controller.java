@@ -13,6 +13,7 @@ public class Controller {
     private int nbJoueur;
     private FantopacThread fantopacThread;
     private FantomeThread fantomeThread;
+    private int nbsKillFant;
 
 
     private boolean[] goNorth;
@@ -150,7 +151,17 @@ public class Controller {
                 view.actualisePositionImage(changement, i);
             }
             verifieEffet(perso);
-            if(model.isPartiePacman())testMort(perso);
+            if(model.isPartiePacman()){
+                testMort(perso);
+                if(nbsKillFant==0)genereKillFant(5);
+            }
+
+            if(perso.isKillFantome()){
+                long currentTime = System.nanoTime();
+                if(currentTime/1000000000>perso.getTempsInitial()/1000000000 + 5){
+                    modeOffensif(perso);
+                }
+            }
         }
 
         //Gestion du Fantopac
@@ -306,7 +317,10 @@ public class Controller {
                 }
                 if (!elementIdentique) {
                     ((Effet) elementsAVerifier[i]).appliqueEffet(perso);
-                    if(model.isPartiePacman()) modeDefensif(perso);
+                    if(model.isPartiePacman()){
+                        modeDefensif(perso);
+                        nbsKillFant++;
+                    }
                     suppressionElement(elementsAVerifier[i].getPosX(), elementsAVerifier[i].getPosY());
                 }
             }
@@ -371,7 +385,8 @@ public class Controller {
 
 
         //Création des bonus killFant et initialisation
-        genereKillFant(5);
+        nbsKillFant=5;
+        genereKillFant(nbsKillFant);
 
 
         //Mise à zéro de l'animation des pacman
@@ -424,43 +439,51 @@ public class Controller {
 
 
     private void modeDefensif(Personnage perso) {
+        perso.setTempsInitial(System.nanoTime());
         for (Fantome f : model.getTabFantome()) {
-            f.setVitesse(2);
-            f.setAttaque(false);
-            perso.setKillFantome(true);
-
+            if(f!=null){
+                f.setVitesse(2);
+                view.relocateCentreCase(f);
+                f.setAttaque(false);
+                perso.setKillFantome(true);
+            }
         }
     }
 
     private void modeOffensif(Personnage perso) {
         for (Fantome f : model.getTabFantome()) {
-            f.setVitesse(1);
-            f.setAttaque(true);
-            perso.setKillFantome(false);
-
+            if(f!=null) {
+                f.setVitesse(1);
+                view.relocateCentreCase(f);
+                f.setAttaque(true);
+                perso.setKillFantome(false);
+            }
         }
     }
 
     private void testMort(Personnage p) {
+        int cpt=0;
         for (Fantome f : model.getTabFantome()) {
             if(f!=null){
-                int xP = p.getPosX()/30;int yP = p.getPosY()/30;
-                int xF = f.getPosX()/30; int yF = f.getPosY()/30;
+                int xP = p.getPosX();int yP = p.getPosY();
+                int xF = f.getPosX(); int yF = f.getPosY();
 
                 if(p.isKillFantome()){
-                    if(xP==xF && yP==yF){
+                    if(xP<=xF+2 && xP>=xF-2 && yP<=yF+2 && yP>=yF-2){
                         f.setVie(f.getVie()-1);
                         p.setScore(p.getScore()+1);
                     }
                 } else if(f.isAttaque()){
-                    if (xF==xP && yF==yP) {
+                    if (xP<=xF+2 && xP>=xF-2 && yP<=yF+2 && yP>=yF-2) {
                         p.setVie(p.getVie()-1);
                         determineJoueurGagnant();
                     }
                 }
-
+            } else {
+                cpt++;
             }
         }
+        if(cpt==model.getTabFantome().length)determineJoueurGagnant();
     }
 
     private void determineJoueurGagnant() {

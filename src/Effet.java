@@ -54,7 +54,7 @@ public class Effet extends Element {
             case 3: if (perso.getVie()<3) perso.setVie(perso.getVie()+1); break;
             case 4: if (perso.getVitesse()<4) perso.setVitesse(perso.getVitesse()+1); break;
             case 5: perso.setNbSpikeBombe(perso.getNbSpikeBombe()+1); break;
-            case 6: perso.setVitesse(2); break;
+            case 6: break;
         }
     }
 

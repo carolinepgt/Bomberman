@@ -249,7 +249,7 @@ public class View {
         closeButton.setOnAction(e -> stage.close());
         VBox root = new VBox();
         root.getChildren().addAll(modalityLabel, closeButton);
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 300, 200);
         stage.setScene(scene);
         stage.show();
     }
@@ -317,8 +317,12 @@ public class View {
             fantome.posX=30;
         }
 
-        /*Autre chaine : pacfant_Couleur_direction_.png   couleurs dispo : Rouge Vert*/
-        imagesFantome[idFantom].setImage( new Image("img2/pacfant_"+fantome.getCouleur()+"_"+direction+".png"));
+        if(fantome.isAttaque()){
+            /*Autre chaine : pacfant_Couleur_direction_.png   couleurs dispo : Rouge Vert*/
+            imagesFantome[idFantom].setImage( new Image("img2/pacfant_"+fantome.getCouleur()+"_"+direction+".png"));
+        } else {
+            imagesFantome[idFantom].setImage( new Image("img2/fant_Peur.png"));
+        }
         imagesFantome[idFantom].relocate(fantome.getPosX(),fantome.getPosY());
     }
 
@@ -358,5 +362,10 @@ public class View {
 
     public void supprimeImageFantome(int iTabFantome) {
             terrain.getChildren().remove(imagesFantome[iTabFantome]);
+    }
+
+    public void relocateCentreCase(Fantome f) {
+        int xF = f.getPosX()/30; int yF = f.getPosY()/30;
+        f.setPosX(xF*30); f.setPosY(yF*30);
     }
 }

@@ -124,4 +124,8 @@ public class Fantome extends Personnage_IA {
     public boolean isAttaque() {
         return attaque;
     }
+
+    public void setVitesse(int vitesse){
+        this.vitesse=vitesse;
+    }
 }

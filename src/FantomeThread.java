@@ -21,7 +21,7 @@ public class FantomeThread extends Thread {
 
                 }
                 try {
-                    sleep(2);
+                    sleep(1);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -95,7 +95,9 @@ public class FantomeThread extends Thread {
 
     private boolean isNotFantome(int xF, int yF) {
         for (Fantome f : model.getTabFantome()) {
-            if(f.getPosX()/30==xF && f.getPosY()/30==yF)return false;
+            if(f!=null){
+                if(f.getPosX()/30==xF && f.getPosY()/30==yF)return false;
+            }
         }
         return true;
     }
