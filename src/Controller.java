@@ -382,7 +382,9 @@ public class Controller {
         Fantome fantomeVert = new Fantome(450,450,"Vert",1);
         Fantome fantomeVert2 = new Fantome(150,450,"Blanc",2);
         Fantome fantomeRouge2 = new Fantome(450,150,"Corne",3);
-        Fantome[] tabFantome = {fantomeRouge,fantomeVert,fantomeVert2,fantomeRouge2};
+        Fantome fantomeViolet = new Fantome(330,270,"Violet",4);
+
+        Fantome[] tabFantome = {fantomeRouge,fantomeVert,fantomeVert2,fantomeRouge2,fantomeViolet};
 
         model.setTabFantome(tabFantome);
         view.initFantome(model.getTabFantome());
