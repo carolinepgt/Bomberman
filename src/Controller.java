@@ -153,7 +153,11 @@ public class Controller {
             verifieEffet(perso);
             if(model.isPartiePacman()){
                 testMort(perso);
-                if(nbsKillFant==0)genereKillFant(5);
+                if(nbsKillFant==0){
+                    genereKillFant(5);
+                    nbsKillFant=5;
+                    view.actualiseAllImage();
+                }
             }
 
             if(perso.isKillFantome()){
@@ -319,7 +323,7 @@ public class Controller {
                     ((Effet) elementsAVerifier[i]).appliqueEffet(perso);
                     if(model.isPartiePacman()){
                         modeDefensif(perso);
-                        nbsKillFant++;
+                        nbsKillFant--;
                     }
                     suppressionElement(elementsAVerifier[i].getPosX(), elementsAVerifier[i].getPosY());
                 }

@@ -58,38 +58,48 @@ public class FantomeThread extends Thread {
         int distance_NORTH_p = getDistance(xF,yF-1,xP,yP);
         int distance_WEST_p = getDistance(xF-1,yF,xP,yP);
 
-
-        if(fantome.isAttaque()){
-            //go South
-            if(plateau[xF][yF+1]==null && distance_SOUTH_p<distanceF_P && isNotFantome(xF,yF+1))fantome.setGoSouth(true);
-
-                //go East
-            else if(plateau[xF+1][yF]==null && distance_EAST_p<distanceF_P && isNotFantome(xF+1,yF))fantome.setGoEast(true);
-
-                // go north
-            else if(plateau[xF][yF-1]==null && distance_NORTH_p<distanceF_P && isNotFantome(xF,yF-1))fantome.setGoNorth(true);
-
-                // go West
-            else if(plateau[xF-1][yF]==null && distance_WEST_p<distanceF_P && isNotFantome(xF-1,yF))fantome.setGoWest(true);
-
-                // go autre direction libre
-            else testDirection(fantome);
+        if(fantome.getPosX()>=570){
+            fantome.setGoWest(true);
+        } else if(fantome.getPosY()>=570) {
+            fantome.setGoNorth(true);
+        } else if(fantome.getPosX()<=30) {
+            fantome.setGoEast(true);
+        } else if(fantome.getPosY()<=30) {
+            fantome.setGoSouth(true);
         } else {
 
-            //go South
-            if((plateau[xF][yF+1]==null || plateau[xF][yF+1].getClass()==Effet.class) && distance_SOUTH_p>distanceF_P)fantome.setGoSouth(true);
+            if(fantome.isAttaque()){
+                //go South
+                if(plateau[xF][yF+1]==null && distance_SOUTH_p<distanceF_P && isNotFantome(xF,yF+1))fantome.setGoSouth(true);
 
-                //go East
-            else if((plateau[xF+1][yF]==null || plateau[xF+1][yF].getClass()==Effet.class) && distance_EAST_p>distanceF_P)fantome.setGoEast(true);
+                    //go East
+                else if(plateau[xF+1][yF]==null && distance_EAST_p<distanceF_P && isNotFantome(xF+1,yF))fantome.setGoEast(true);
 
-                // go north
-            else if((plateau[xF][yF-1]==null || plateau[xF][yF-1].getClass()==Effet.class) && distance_NORTH_p>distanceF_P)fantome.setGoNorth(true);
+                    // go north
+                else if(plateau[xF][yF-1]==null && distance_NORTH_p<distanceF_P && isNotFantome(xF,yF-1))fantome.setGoNorth(true);
 
-                // go West
-            else if((plateau[xF-1][yF]==null || plateau[xF-1][yF].getClass()==Effet.class) && distance_WEST_p>distanceF_P)fantome.setGoWest(true);
+                    // go West
+                else if(plateau[xF-1][yF]==null && distance_WEST_p<distanceF_P && isNotFantome(xF-1,yF))fantome.setGoWest(true);
 
-                // go autre direction libre
-            else testDirection(fantome);
+                    // go autre direction libre
+                else testDirection(fantome);
+            } else {
+
+                //go South
+                if((plateau[xF][yF+1]==null || plateau[xF][yF+1].getClass()==Effet.class) && distance_SOUTH_p>distanceF_P)fantome.setGoSouth(true);
+
+                    //go East
+                else if((plateau[xF+1][yF]==null || plateau[xF+1][yF].getClass()==Effet.class) && distance_EAST_p>distanceF_P)fantome.setGoEast(true);
+
+                    // go north
+                else if((plateau[xF][yF-1]==null || plateau[xF][yF-1].getClass()==Effet.class) && distance_NORTH_p>distanceF_P)fantome.setGoNorth(true);
+
+                    // go West
+                else if((plateau[xF-1][yF]==null || plateau[xF-1][yF].getClass()==Effet.class) && distance_WEST_p>distanceF_P)fantome.setGoWest(true);
+
+                    // go autre direction libre
+                else testDirection(fantome);
+            }
         }
     }
 
