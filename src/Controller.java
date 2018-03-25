@@ -150,6 +150,7 @@ public class Controller {
                 view.actualisePositionImage(changement, i);
             }
             verifieEffet(perso);
+            if(model.isPartiePacman())testMort(perso);
         }
 
         //Gestion du Fantopac
@@ -164,11 +165,20 @@ public class Controller {
         //Gestion des fantomes de la partie pacman
         if(model.isPartiePacman()){
             for (Fantome f : model.getTabFantome()) {
-                int changementFantome = f.actualisePosition(model.getPlateau(), f.isGoNorth(), f.isGoEast(), f.isGoSouth(), f.isGoWest());
-                if(changementFantome!=0) view.actualisePositionImageFantome(f.iTabFantom,changementFantome);
+                if(f!=null){
+                    if(!f.estEnVie()){
+                        System.out.println("Fantome mort !! ");
+                        model.getTabFantome()[f.getiTabFantom()]=null;
+                        view.supprimeImageFantome(f.getiTabFantom());
+                    } else {
+                        int changementFantome = f.actualisePosition(model.getPlateau(), f.isGoNorth(), f.isGoEast(), f.isGoSouth(), f.isGoWest());
+                        if(changementFantome!=0) view.actualisePositionImageFantome(f.iTabFantom,changementFantome);
+                    }
+                }
             }
         }
     }
+
 
     private void toucheBombe(int i, int typeBombe) {
         Bombe bombe = model.getTabPerso()[i].poseBombe(model.getPlateau().getTabElement(), typeBombe);
@@ -223,11 +233,9 @@ public class Controller {
 
 
         //Méthode pour détecter le fantopac
-        if(model.nbsJoueurs!=1){
-            if(!model.isPartiePacman()){
-                int posFantopac[] = model.getFantopac().getPosFantopac();
-                if (posFantopac[0]/30 == x && posFantopac[1]/30 == y) degatFantopac();
-            }
+        if(model.nbsJoueurs!=1 && !model.isPartiePacman()){
+            int posFantopac[] = model.getFantopac().getPosFantopac();
+            if (posFantopac[0]/30==x && posFantopac[1]/30==y) degatFantopac();
         }
 
 
@@ -298,6 +306,7 @@ public class Controller {
                 }
                 if (!elementIdentique) {
                     ((Effet) elementsAVerifier[i]).appliqueEffet(perso);
+                    if(model.isPartiePacman()) modeDefensif(perso);
                     suppressionElement(elementsAVerifier[i].getPosX(), elementsAVerifier[i].getPosY());
                 }
             }
@@ -317,8 +326,6 @@ public class Controller {
         if (!model.getFantopac().estEnVie()) {
             model.setPartiePacman(true);
             goBomberPac();
-            actualisePostion();
-
         }
     }
 
@@ -370,6 +377,7 @@ public class Controller {
         //Mise à zéro de l'animation des pacman
         for (Personnage p :model.getTabPerso()) {
             p.setNumAnime(1);
+            p.setNbBombeRestantes(0);
         }
 
 
@@ -394,6 +402,9 @@ public class Controller {
         return true;
     }
 
+    /**
+     * Méthodes de gestion de la partie pacman
+     * **/
     private void genereKillFant(int nbsBonus) {
         Random random=new Random();
         for (int i = 0; i < nbsBonus; i++) {
@@ -409,6 +420,68 @@ public class Controller {
                 i--;
             }
         }
+    }
+
+
+    private void modeDefensif(Personnage perso) {
+        for (Fantome f : model.getTabFantome()) {
+            f.setVitesse(2);
+            f.setAttaque(false);
+            perso.setKillFantome(true);
+
+        }
+    }
+
+    private void modeOffensif(Personnage perso) {
+        for (Fantome f : model.getTabFantome()) {
+            f.setVitesse(1);
+            f.setAttaque(true);
+            perso.setKillFantome(false);
+
+        }
+    }
+
+    private void testMort(Personnage p) {
+        for (Fantome f : model.getTabFantome()) {
+            if(f!=null){
+                int xP = p.getPosX()/30;int yP = p.getPosY()/30;
+                int xF = f.getPosX()/30; int yF = f.getPosY()/30;
+
+                if(p.isKillFantome()){
+                    if(xP==xF && yP==yF){
+                        f.setVie(f.getVie()-1);
+                        p.setScore(p.getScore()+1);
+                    }
+                } else if(f.isAttaque()){
+                    if (xF==xP && yF==yP) {
+                        p.setVie(p.getVie()-1);
+                        determineJoueurGagnant();
+                    }
+                }
+
+            }
+        }
+    }
+
+    private void determineJoueurGagnant() {
+        int bestScore = -1;
+        Personnage vainqueur = model.getTabPerso()[0];
+        for (Personnage p : model.getTabPerso()) {
+            if(p.getScore()>bestScore){
+                bestScore=p.getScore();
+                vainqueur = p;
+            }
+        }
+
+        if(bestScore==0){
+            for (Personnage p : model.getTabPerso()) {
+                if(p.estEnVie()){
+                    vainqueur = p;
+                }
+            }
+        }
+
+        view.afficheFenetreFin(vainqueur);
     }
 
     /******************** Methode IA ******************************************************/

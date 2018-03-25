@@ -118,6 +118,9 @@ public class Fantome extends Personnage_IA {
         this.iTabFantom = iTabFantom;
     }
 
+    public void setAttaque(boolean mode){
+        this.attaque = mode;
+    }
     public boolean isAttaque() {
         return attaque;
     }

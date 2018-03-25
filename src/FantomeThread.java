@@ -1,3 +1,4 @@
+import javax.naming.ldap.PagedResultsControl;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,8 +15,11 @@ public class FantomeThread extends Thread {
     public void run(){
         while(true){
             for (Fantome f : model.getTabFantome()) {
-                if(f.posX%30==0 && f.posY%30==0)comportementFantome(f);
+                if(f!=null){
 
+                    if(f.posX%30==0 && f.posY%30==0)comportementFantome(f);
+
+                }
                 try {
                     sleep(2);
                 } catch (InterruptedException e) {
@@ -27,8 +31,7 @@ public class FantomeThread extends Thread {
         }
     }
 
-
-    private void comportementFantome(Fantome fantome) {
+    private synchronized void comportementFantome(Fantome fantome) {
         fantome.initDirectionFantome();
 
         int indexEnnemiProche = getEnnemiProche(fantome);
@@ -112,7 +115,7 @@ public class FantomeThread extends Thread {
         int choix;
 
         while (!ok){
-            choix = random.nextInt(3);
+            choix = random.nextInt(4);
             switch (choix){
                 case 0 :
                     if(plateau[x_Fantome][y_fantome-1]==null || plateau[x_Fantome][y_fantome-1].getClass()==Effet.class){

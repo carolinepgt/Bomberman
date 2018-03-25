@@ -14,6 +14,8 @@ public class Personnage {
     private String couleur;
     private int changement;
     private int numAnime; //String qui stock le numéro (1,2 ou 3) de l'image du pacman
+    private boolean killFantome;
+    int score;
 
 
     public Personnage(int posX, int posY,String couleur) {
@@ -29,6 +31,8 @@ public class Personnage {
         nbSpikeBombe=0;
         changement=1;
         this.couleur = couleur;
+        killFantome=false;
+        score=0;
     }
 
     public Personnage(int posX, int posY, String couleur, int nj) {
@@ -49,7 +53,6 @@ public class Personnage {
     }
 
     public int actualisePosition(Plateau plateau, boolean north, boolean east, boolean south, boolean west) {
-
         Element[][] elements=plateau.getTabElement();
         int sizeElem=Element.size;
         int modifPosition=0;
@@ -230,5 +233,21 @@ public class Personnage {
 
     public void setHaveMine(boolean haveMine) {
         this.haveMine = haveMine;
+    }
+
+    public void setKillFantome(boolean killFantome) {
+        this.killFantome = killFantome;
+    }
+
+    public boolean isKillFantome(){
+        return killFantome;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

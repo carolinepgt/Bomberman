@@ -241,6 +241,18 @@ public class View {
         stage.show();
     }
 
+    public void afficheFenetreFin(Personnage p){
+
+        Stage stage = new Stage();
+        Label modalityLabel = new Label("Partie terminé! \n Le joueur "+p.getCouleur()+" a gagné avec "+p.getScore()+" fantomes tués. \n BRAVO !!");
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(e -> stage.close());
+        VBox root = new VBox();
+        root.getChildren().addAll(modalityLabel, closeButton);
+        Scene scene = new Scene(root, 400, 300);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public void initialisePlateauReseau() {
         Platform.runLater(() -> {
@@ -342,5 +354,9 @@ public class View {
 
     public void reveleSol(int x, int y){
         imagesSol[x][y].setVisible(true);
+    }
+
+    public void supprimeImageFantome(int iTabFantome) {
+            terrain.getChildren().remove(imagesFantome[iTabFantome]);
     }
 }
